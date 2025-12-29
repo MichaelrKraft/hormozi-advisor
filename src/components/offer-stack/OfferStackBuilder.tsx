@@ -139,7 +139,7 @@ export default function OfferStackBuilder({ stack, onUpdate }: OfferStackBuilder
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-amber-600 ${
+          className={`w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-sky-600 ${
             prefix ? 'pl-7' : ''
           }`}
         />
@@ -167,7 +167,7 @@ export default function OfferStackBuilder({ stack, onUpdate }: OfferStackBuilder
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
-        className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-amber-600 resize-none"
+        className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-sky-600 resize-none"
       />
     </div>
   );
@@ -280,7 +280,7 @@ export default function OfferStackBuilder({ stack, onUpdate }: OfferStackBuilder
                 onChange={(e) =>
                   updateBonus(bonus.id, { type: e.target.value as BonusType })
                 }
-                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-amber-600"
+                className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-sky-600"
               >
                 {Object.entries(BONUS_TYPES).map(([key, meta]) => (
                   <option key={key} value={key}>
@@ -337,7 +337,7 @@ export default function OfferStackBuilder({ stack, onUpdate }: OfferStackBuilder
                   key={key}
                   className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                     stack.guarantee.type === key
-                      ? 'bg-amber-900/20 border-amber-600'
+                      ? 'bg-sky-900/20 border-sky-600'
                       : 'bg-zinc-700/30 border-zinc-600 hover:border-zinc-500'
                   }`}
                 >
@@ -402,7 +402,7 @@ export default function OfferStackBuilder({ stack, onUpdate }: OfferStackBuilder
               onChange={(e) =>
                 updateScarcity({ type: e.target.value as ScarcityType })
               }
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-amber-600"
+              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-sky-600"
             >
               <option value="none">No Scarcity</option>
               <option value="spots">Limited Spots</option>
@@ -459,7 +459,7 @@ export default function OfferStackBuilder({ stack, onUpdate }: OfferStackBuilder
               onChange={(e) =>
                 updateUrgency({ type: e.target.value as UrgencyType })
               }
-              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-amber-600"
+              className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-sky-600"
             >
               <option value="none">No Urgency</option>
               <option value="price-increase">Price Increases</option>

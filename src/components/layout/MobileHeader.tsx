@@ -48,9 +48,9 @@ export default function MobileHeader({ currentPage }: MobileHeaderProps) {
                 href={link.href}
                 className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-amber-600/20 text-amber-400 border border-amber-600'
+                    ? 'bg-sky-600/20 text-sky-400 border border-sky-600'
                     : link.isPrimary
-                    ? 'bg-amber-600 text-white hover:bg-amber-500'
+                    ? 'bg-sky-600 text-white hover:bg-sky-500'
                     : 'text-zinc-300 hover:text-white border border-zinc-700 hover:border-zinc-500'
                 }`}
               >
@@ -89,9 +89,9 @@ export default function MobileHeader({ currentPage }: MobileHeaderProps) {
                 href={link.href}
                 className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
                   isActive
-                    ? 'text-amber-400 bg-amber-600/10'
+                    ? 'text-sky-400 bg-sky-600/10'
                     : link.isPrimary
-                    ? 'text-white bg-amber-600'
+                    ? 'text-white bg-sky-600'
                     : 'text-zinc-300 hover:bg-zinc-800'
                 }`}
                 onClick={() => setMobileMenuOpen(false)}

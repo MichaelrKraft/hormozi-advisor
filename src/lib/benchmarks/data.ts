@@ -213,7 +213,7 @@ export function compareToBenchmark(
     'below-median': 'text-red-400',
     median: 'text-yellow-400',
     good: 'text-emerald-400',
-    excellent: 'text-amber-400',
+    excellent: 'text-sky-400',
   };
 
   return {

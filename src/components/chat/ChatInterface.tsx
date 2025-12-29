@@ -251,7 +251,7 @@ export default function ChatInterface() {
                 <button
                   key={ind}
                   onClick={() => handleIndustrySelect(ind)}
-                  className="px-4 py-3 text-sm font-medium text-zinc-200 bg-zinc-700 rounded-lg hover:bg-amber-600/20 hover:text-amber-400 hover:border-amber-600/50 border border-zinc-600 transition-colors text-left"
+                  className="px-4 py-3 text-sm font-medium text-zinc-200 bg-zinc-700 rounded-lg hover:bg-sky-600/20 hover:text-sky-400 hover:border-sky-600/50 border border-zinc-600 transition-colors text-left"
                 >
                   {ind}
                 </button>
@@ -300,7 +300,7 @@ export default function ChatInterface() {
           {industry && (
             <button
               onClick={() => setShowIndustrySelector(true)}
-              className="px-3 py-1 text-xs font-medium text-amber-400 bg-amber-900/30 border border-amber-600/30 rounded-full hover:bg-amber-900/50 transition-colors"
+              className="px-3 py-1 text-xs font-medium text-sky-400 bg-sky-900/30 border border-sky-600/30 rounded-full hover:bg-sky-900/50 transition-colors"
             >
               {industry} ✎
             </button>
@@ -317,7 +317,7 @@ export default function ChatInterface() {
         {/* New Chat button */}
         <button
           onClick={handleNewConversation}
-          className="text-xs text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1"
+          className="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1"
         >
           <span>+</span> New Chat
         </button>
@@ -329,7 +329,7 @@ export default function ChatInterface() {
           <div className="flex flex-col items-center justify-center h-full text-center px-4 -mt-20">
             <div className="text-6xl mb-4">💰</div>
             <h2 className="text-2xl font-bold text-white mb-2">
-              Talk to <span className="text-amber-400">Alex Hormozi</span>
+              Talk to <span className="text-sky-400">Alex Hormozi</span>
             </h2>
             <p className="text-zinc-400 max-w-md mb-4">
               Get business advice using the frameworks from $100M Offers and $100M Leads.
@@ -338,7 +338,7 @@ export default function ChatInterface() {
             {!industry && (
               <button
                 onClick={() => setShowIndustrySelector(true)}
-                className="mb-4 px-4 py-2 text-sm font-medium text-amber-400 border border-amber-600/50 rounded-lg hover:bg-amber-900/30 transition-colors"
+                className="mb-4 px-4 py-2 text-sm font-medium text-sky-400 border border-sky-600/50 rounded-lg hover:bg-sky-900/30 transition-colors"
               >
                 Select Your Industry for Personalized Advice
               </button>
@@ -353,14 +353,14 @@ export default function ChatInterface() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Ask about offers, leads, pricing, LTV/CAC, or request a playbook..."
-                  className="flex-1 resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 min-h-[48px] max-h-[200px]"
+                  className="flex-1 resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[48px] max-h-[200px]"
                   rows={1}
                   disabled={isLoading}
                 />
                 <button
                   type="submit"
                   disabled={!input.trim() || isLoading}
-                  className="self-end px-4 py-3 bg-amber-600 text-white rounded-xl hover:bg-amber-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors"
+                  className="self-end px-4 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
@@ -389,7 +389,7 @@ export default function ChatInterface() {
               <div className="flex justify-start mb-4">
                 <div className="max-w-[80%] bg-zinc-800 border border-zinc-700 rounded-2xl rounded-bl-md px-4 py-3">
                   <p className="text-sm text-zinc-100 whitespace-pre-wrap">{streamingContent}</p>
-                  <span className="inline-block w-2 h-4 bg-amber-500 animate-pulse ml-1" />
+                  <span className="inline-block w-2 h-4 bg-sky-500 animate-pulse ml-1" />
                 </div>
               </div>
             )}
@@ -398,9 +398,9 @@ export default function ChatInterface() {
               <div className="flex justify-start mb-4">
                 <div className="bg-zinc-800 border border-zinc-700 rounded-2xl rounded-bl-md px-4 py-3">
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <div className="w-2 h-2 bg-sky-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 bg-sky-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 bg-sky-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               </div>
@@ -427,14 +427,14 @@ export default function ChatInterface() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask about offers, leads, pricing, LTV/CAC, or request a playbook..."
-              className="flex-1 resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 min-h-[48px] max-h-[200px]"
+              className="flex-1 resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[48px] max-h-[200px]"
               rows={1}
               disabled={isLoading}
             />
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="self-end px-4 py-3 bg-amber-600 text-white rounded-xl hover:bg-amber-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors"
+              className="self-end px-4 py-3 bg-sky-600 text-white rounded-xl hover:bg-sky-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors"
             >
               <svg
                 className="w-5 h-5"

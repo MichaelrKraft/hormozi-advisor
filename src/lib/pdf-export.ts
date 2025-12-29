@@ -2,7 +2,7 @@ import jsPDF from 'jspdf';
 
 // Colors matching the app theme
 const COLORS = {
-  amber: { r: 217, g: 119, b: 6 },
+  sky: { r: 2, g: 132, b: 199 },  // sky-600
   zinc900: { r: 24, g: 24, b: 27 },
   zinc800: { r: 39, g: 39, b: 42 },
   zinc400: { r: 161, g: 161, b: 170 },
@@ -22,7 +22,7 @@ interface PDFExportOptions {
   mainScore?: {
     value: string;
     label: string;
-    color?: 'amber' | 'emerald' | 'red';
+    color?: 'sky' | 'emerald' | 'red';
   };
   sections: PDFSection[];
   recommendations?: string[];
@@ -50,7 +50,7 @@ export function generatePDF(options: PDFExportOptions): void {
   doc.rect(0, 0, pageWidth, 25, 'F');
 
   // Logo/Brand
-  doc.setTextColor(COLORS.amber.r, COLORS.amber.g, COLORS.amber.b);
+  doc.setTextColor(COLORS.sky.r, COLORS.sky.g, COLORS.sky.b);
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text('Hormozi Advisor', margin, 16);
@@ -96,7 +96,7 @@ export function generatePDF(options: PDFExportOptions): void {
         ? COLORS.emerald
         : options.mainScore.color === 'red'
         ? COLORS.red
-        : COLORS.amber;
+        : COLORS.sky;
     doc.setTextColor(scoreColor.r, scoreColor.g, scoreColor.b);
     doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
@@ -148,7 +148,7 @@ export function generatePDF(options: PDFExportOptions): void {
     yPos += 8;
 
     // Section title
-    doc.setTextColor(COLORS.amber.r, COLORS.amber.g, COLORS.amber.b);
+    doc.setTextColor(COLORS.sky.r, COLORS.sky.g, COLORS.sky.b);
     doc.setFontSize(13);
     doc.setFont('helvetica', 'bold');
     doc.text(section.title, margin, yPos);

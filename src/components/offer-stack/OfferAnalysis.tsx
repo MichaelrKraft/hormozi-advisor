@@ -18,7 +18,7 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
   const handleExportPDF = () => {
     const scoreColor = analysis.strengthScore >= 80 ? 'emerald'
       : analysis.strengthScore < 50 ? 'red'
-      : 'amber';
+      : 'sky';
 
     generatePDF({
       title: 'Offer Stack Analysis',
@@ -72,8 +72,8 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
 
   const getRatingColor = (color: string) => {
     switch (color) {
-      case 'amber':
-        return 'text-amber-400 bg-amber-900/30 border-amber-600';
+      case 'sky':
+        return 'text-sky-400 bg-sky-900/30 border-sky-600';
       case 'emerald':
         return 'text-emerald-400 bg-emerald-900/30 border-emerald-600';
       case 'green':
@@ -107,8 +107,8 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
       </div>
 
       {/* Hormozi's Take */}
-      <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-5">
-        <div className="text-amber-400 font-semibold mb-2">Hormozi&apos;s Take:</div>
+      <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-5">
+        <div className="text-sky-400 font-semibold mb-2">Hormozi&apos;s Take:</div>
         <p className="text-zinc-300 italic">&quot;{rating.hormozi}&quot;</p>
       </div>
 
@@ -146,7 +146,7 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
             <span className="text-zinc-400">
               Perceived Value (with guarantee/scarcity/urgency)
             </span>
-            <span className="text-amber-400 font-bold">
+            <span className="text-sky-400 font-bold">
               {formatCurrency(analysis.perceivedValue)}
             </span>
           </div>
@@ -162,7 +162,7 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
         <div
           className={`mt-4 p-4 rounded-lg border ${
             analysis.priceToValueRatio >= 10
-              ? 'bg-amber-900/20 border-amber-600'
+              ? 'bg-sky-900/20 border-sky-600'
               : analysis.priceToValueRatio >= 5
               ? 'bg-emerald-900/20 border-emerald-600'
               : analysis.priceToValueRatio >= 3
@@ -316,12 +316,12 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
 
       {/* Suggestions */}
       {analysis.suggestions.length > 0 && (
-        <div className="bg-zinc-800 border border-amber-900/50 rounded-xl p-5">
-          <h3 className="text-lg font-semibold text-amber-400 mb-3">💡 Suggestions</h3>
+        <div className="bg-zinc-800 border border-sky-900/50 rounded-xl p-5">
+          <h3 className="text-lg font-semibold text-sky-400 mb-3">💡 Suggestions</h3>
           <ul className="space-y-2">
             {analysis.suggestions.map((suggestion, i) => (
               <li key={i} className="flex items-start gap-2 text-zinc-300">
-                <span className="text-amber-500 mt-1">→</span>
+                <span className="text-sky-500 mt-1">→</span>
                 <span>{suggestion}</span>
               </li>
             ))}
@@ -351,7 +351,7 @@ export default function OfferAnalysis({ stack, analysis, onSave }: OfferAnalysis
 
         <Link
           href={`/chat?context=offer-stack&score=${analysis.strengthScore}&name=${encodeURIComponent(stack.name || 'My Offer')}`}
-          className="block w-full py-3 px-4 bg-amber-600 text-white font-semibold rounded-lg text-center hover:bg-amber-500 transition-colors"
+          className="block w-full py-3 px-4 bg-sky-600 text-white font-semibold rounded-lg text-center hover:bg-sky-500 transition-colors"
         >
           Discuss This Offer with Hormozi
         </Link>

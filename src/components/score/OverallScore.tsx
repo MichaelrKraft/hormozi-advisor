@@ -79,7 +79,7 @@ export default function OverallScore({
         </div>
         <div className="w-48 h-1.5 bg-zinc-700 rounded-full mt-2 overflow-hidden">
           <div
-            className="h-full bg-amber-500 rounded-full transition-all duration-500"
+            className="h-full bg-sky-500 rounded-full transition-all duration-500"
             style={{ width: `${completeness}%` }}
           />
         </div>
@@ -99,6 +99,6 @@ function getStrokeColor(rating: HealthRating): string {
     case 'good':
       return '#10b981'; // emerald-500
     case 'excellent':
-      return '#f59e0b'; // amber-500
+      return '#f59e0b'; // sky-500
   }
 }

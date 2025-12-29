@@ -27,7 +27,7 @@ export default function Recommendations({ recommendations }: RecommendationsProp
       <ul className="space-y-3">
         {recommendations.map((rec, index) => (
           <li key={index} className="flex items-start gap-3">
-            <span className="flex-shrink-0 w-6 h-6 bg-amber-500/20 text-amber-400 rounded-full flex items-center justify-center text-sm font-medium">
+            <span className="flex-shrink-0 w-6 h-6 bg-sky-500/20 text-sky-400 rounded-full flex items-center justify-center text-sm font-medium">
               {index + 1}
             </span>
             <span className="text-zinc-300 text-sm leading-relaxed">{rec}</span>

@@ -174,7 +174,7 @@ export default function OfferStackPage() {
                   </div>
 
                   {/* Hormozi Tip */}
-                  <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-4">
+                  <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-4">
                     <p className="text-zinc-400 text-sm italic">
                       &quot;The goal is to make an offer so good people feel stupid saying no.
                       Stack so much value that your price seems like a steal.&quot;
@@ -187,7 +187,7 @@ export default function OfferStackPage() {
                     disabled={!canAnalyze}
                     className={`w-full py-4 px-6 rounded-xl font-semibold transition-colors ${
                       canAnalyze
-                        ? 'bg-amber-600 text-white hover:bg-amber-500'
+                        ? 'bg-sky-600 text-white hover:bg-sky-500'
                         : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
                     }`}
                   >

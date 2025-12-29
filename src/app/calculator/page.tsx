@@ -91,7 +91,7 @@ export default function CalculatorPage() {
       <section className="py-12 px-4 text-center border-b border-zinc-800">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            LTV/CAC <span className="text-amber-400">Calculator</span>
+            LTV/CAC <span className="text-sky-400">Calculator</span>
           </h1>
           <p className="text-xl text-zinc-400">
             The only metric that matters. Calculate your numbers and get
@@ -184,7 +184,7 @@ export default function CalculatorPage() {
                     <button
                       key={snapshot.id}
                       onClick={() => handleLoadSnapshot(snapshot)}
-                      className="flex-shrink-0 bg-zinc-800 border border-zinc-700 rounded-xl p-4 hover:border-amber-600/50 transition-colors text-left min-w-[120px]"
+                      className="flex-shrink-0 bg-zinc-800 border border-zinc-700 rounded-xl p-4 hover:border-sky-600/50 transition-colors text-left min-w-[120px]"
                     >
                       <div className="text-sm text-zinc-400 mb-1">
                         {formatDate(snapshot.timestamp)}
@@ -215,7 +215,7 @@ export default function CalculatorPage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-amber-400 mb-2">
+              <h3 className="text-lg font-semibold text-sky-400 mb-2">
                 LTV (Lifetime Value)
               </h3>
               <p className="text-zinc-400 text-sm mb-3">
@@ -228,7 +228,7 @@ export default function CalculatorPage() {
               </div>
             </div>
             <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6">
-              <h3 className="text-lg font-semibold text-amber-400 mb-2">
+              <h3 className="text-lg font-semibold text-sky-400 mb-2">
                 CAC (Customer Acquisition Cost)
               </h3>
               <p className="text-zinc-400 text-sm mb-3">
@@ -252,7 +252,7 @@ export default function CalculatorPage() {
               <RatioGuideRow ratio="2-3:1" label="Surviving, but risky" color="text-yellow-400" />
               <RatioGuideRow ratio="3-5:1" label="Healthy - can grow confidently" color="text-green-400" />
               <RatioGuideRow ratio="5-10:1" label="Strong - scale aggressively" color="text-emerald-400" />
-              <RatioGuideRow ratio="10+:1" label="Exceptional - protect at all costs" color="text-amber-400" />
+              <RatioGuideRow ratio="10+:1" label="Exceptional - protect at all costs" color="text-sky-400" />
             </div>
           </div>
         </div>

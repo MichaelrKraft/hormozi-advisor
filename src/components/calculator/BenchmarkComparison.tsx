@@ -31,7 +31,7 @@ export default function BenchmarkComparison({
         <select
           value={industry}
           onChange={(e) => onChangeIndustry(e.target.value as Industry)}
-          className="bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-amber-500"
+          className="bg-zinc-700 border border-zinc-600 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-sky-500"
         >
           {INDUSTRY_LIST.map((ind) => (
             <option key={ind.id} value={ind.id}>
@@ -148,7 +148,7 @@ function getBarColor(rank: string): string {
     case 'below-median': return 'bg-red-500';
     case 'median': return 'bg-yellow-500';
     case 'good': return 'bg-emerald-500';
-    case 'excellent': return 'bg-amber-500';
+    case 'excellent': return 'bg-sky-500';
     default: return 'bg-zinc-500';
   }
 }

@@ -64,7 +64,7 @@ export default function BottleneckQuiz({ onComplete }: BottleneckQuizProps) {
         </div>
         <div className="h-2 bg-zinc-700 rounded-full overflow-hidden">
           <div
-            className="h-full bg-amber-500 transition-all duration-300"
+            className="h-full bg-sky-500 transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -84,7 +84,7 @@ export default function BottleneckQuiz({ onComplete }: BottleneckQuizProps) {
               onClick={() => handleOptionSelect(index)}
               className={`w-full text-left p-4 rounded-lg border transition-all ${
                 selectedOption === index
-                  ? 'bg-amber-600/20 border-amber-600 text-white'
+                  ? 'bg-sky-600/20 border-sky-600 text-white'
                   : 'bg-zinc-700/30 border-zinc-600 text-zinc-300 hover:border-zinc-500 hover:bg-zinc-700/50'
               }`}
             >
@@ -92,7 +92,7 @@ export default function BottleneckQuiz({ onComplete }: BottleneckQuizProps) {
                 <div
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                     selectedOption === index
-                      ? 'border-amber-500 bg-amber-500'
+                      ? 'border-sky-500 bg-sky-500'
                       : 'border-zinc-500'
                   }`}
                 >
@@ -122,7 +122,7 @@ export default function BottleneckQuiz({ onComplete }: BottleneckQuizProps) {
           disabled={selectedOption === null}
           className={`flex-1 py-3 px-6 rounded-lg font-semibold transition-colors ${
             selectedOption !== null
-              ? 'bg-amber-600 text-white hover:bg-amber-500'
+              ? 'bg-sky-600 text-white hover:bg-sky-500'
               : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
           }`}
         >

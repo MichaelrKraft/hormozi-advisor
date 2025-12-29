@@ -29,8 +29,8 @@ export default function BottleneckResults({
         return 'bg-blue-500';
       case 'purple':
         return 'bg-purple-500';
-      case 'amber':
-        return 'bg-amber-500';
+      case 'sky':
+        return 'bg-sky-500';
       case 'green':
         return 'bg-green-500';
       default:
@@ -52,7 +52,7 @@ export default function BottleneckResults({
   };
 
   const handleExportPDF = () => {
-    const scoreColor = severity.level === 'critical' || severity.level === 'significant' ? 'red' : 'amber';
+    const scoreColor = severity.level === 'critical' || severity.level === 'significant' ? 'red' : 'sky';
 
     generatePDF({
       title: 'Bottleneck Diagnostic',
@@ -122,7 +122,7 @@ export default function BottleneckResults({
                 key={area}
                 className={`rounded-lg p-3 ${
                   isPrimary
-                    ? 'bg-amber-900/20 border border-amber-600/50'
+                    ? 'bg-sky-900/20 border border-sky-600/50'
                     : isSecondary
                     ? 'bg-zinc-700/30 border border-zinc-600'
                     : 'bg-zinc-800/30'
@@ -133,7 +133,7 @@ export default function BottleneckResults({
                     <span>{meta.icon}</span>
                     <span className="text-white font-medium">{meta.label}</span>
                     {isPrimary && (
-                      <span className="text-xs bg-amber-600 text-white px-2 py-0.5 rounded">
+                      <span className="text-xs bg-sky-600 text-white px-2 py-0.5 rounded">
                         #1
                       </span>
                     )}
@@ -158,8 +158,8 @@ export default function BottleneckResults({
       </div>
 
       {/* Hormozi's Take */}
-      <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-5">
-        <div className="text-amber-400 font-semibold mb-2">Hormozi&apos;s Take:</div>
+      <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-5">
+        <div className="text-sky-400 font-semibold mb-2">Hormozi&apos;s Take:</div>
         <p className="text-zinc-300 italic">&quot;{primaryAdvice.hormoziQuote}&quot;</p>
       </div>
 
@@ -194,7 +194,7 @@ export default function BottleneckResults({
         <div className="space-y-2">
           {primaryAdvice.deepDive.map((action, i) => (
             <div key={i} className="flex items-start gap-2 text-zinc-400">
-              <span className="text-amber-500 mt-1">→</span>
+              <span className="text-sky-500 mt-1">→</span>
               <span>{action}</span>
             </div>
           ))}
@@ -223,7 +223,7 @@ export default function BottleneckResults({
 
         <Link
           href={`/chat?context=bottleneck&area=${results.primary}&prompt=${encodeURIComponent(primaryAdvice.chatPrompt)}`}
-          className="block w-full py-3 px-4 bg-amber-600 text-white font-semibold rounded-lg text-center hover:bg-amber-500 transition-colors"
+          className="block w-full py-3 px-4 bg-sky-600 text-white font-semibold rounded-lg text-center hover:bg-sky-500 transition-colors"
         >
           Discuss My {primaryAdvice.title} Problem with Hormozi
         </Link>

@@ -36,7 +36,7 @@ export default function PricingSlider({
           <h3 className="text-white font-medium">{question}</h3>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-amber-400">{value}</div>
+          <div className="text-2xl font-bold text-sky-400">{value}</div>
           <div className="text-xs text-zinc-500">/10</div>
         </div>
       </div>

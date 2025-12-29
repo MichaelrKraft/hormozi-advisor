@@ -127,7 +127,7 @@ export default function PricingPage() {
                       value={currentPrice || ''}
                       onChange={(e) => setCurrentPrice(parseInt(e.target.value) || 0)}
                       placeholder="997"
-                      className="w-full pl-7 pr-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-amber-600"
+                      className="w-full pl-7 pr-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-sky-600"
                     />
                   </div>
                 </div>
@@ -136,7 +136,7 @@ export default function PricingPage() {
                   <select
                     value={industry}
                     onChange={(e) => setIndustry(e.target.value)}
-                    className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-amber-600"
+                    className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:border-sky-600"
                   >
                     <option value="">Select industry...</option>
                     {INDUSTRIES.map((ind) => (
@@ -150,13 +150,13 @@ export default function PricingPage() {
             </div>
 
             {/* Hormozi Quote */}
-            <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-5">
+            <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-5">
               <p className="text-zinc-300 italic">
                 &quot;Pricing has the STRONGEST lever on profit. Not acquisition.
                 Not retention. Pricing. A 10% price increase goes straight to
                 your bottom line.&quot;
               </p>
-              <p className="text-amber-400 text-sm mt-2">— Alex Hormozi</p>
+              <p className="text-sky-400 text-sm mt-2">— Alex Hormozi</p>
             </div>
 
             {/* Indicators by Category */}
@@ -190,7 +190,7 @@ export default function PricingPage() {
             {/* Analyze Button */}
             <button
               onClick={handleAnalyze}
-              className="w-full py-4 px-6 bg-amber-600 text-white font-semibold rounded-xl hover:bg-amber-500 transition-colors text-lg"
+              className="w-full py-4 px-6 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-500 transition-colors text-lg"
             >
               Analyze My Pricing
             </button>

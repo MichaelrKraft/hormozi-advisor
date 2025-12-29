@@ -92,9 +92,9 @@ export default function BottleneckPage() {
                   <div className="text-purple-400 font-medium">Conversion</div>
                   <div className="text-xs text-zinc-500">People see but don&apos;t buy</div>
                 </div>
-                <div className="bg-amber-900/20 border border-amber-800/50 rounded-lg p-4 text-center">
+                <div className="bg-sky-900/20 border border-sky-800/50 rounded-lg p-4 text-center">
                   <div className="text-2xl mb-1">💵</div>
-                  <div className="text-amber-400 font-medium">Pricing</div>
+                  <div className="text-sky-400 font-medium">Pricing</div>
                   <div className="text-xs text-zinc-500">Selling but margins are thin</div>
                 </div>
                 <div className="bg-green-900/20 border border-green-800/50 rounded-lg p-4 text-center">
@@ -106,13 +106,13 @@ export default function BottleneckPage() {
             </div>
 
             {/* Hormozi Quote */}
-            <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-5">
+            <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-5">
               <p className="text-zinc-300 italic">
                 &quot;Every business has a constraint. The question is: do you know what yours is?
                 Most entrepreneurs are pushing on the wrong lever. Find the bottleneck,
                 fix it, and everything else gets easier.&quot;
               </p>
-              <p className="text-amber-400 text-sm mt-2">— Alex Hormozi</p>
+              <p className="text-sky-400 text-sm mt-2">— Alex Hormozi</p>
             </div>
 
             {/* Business Name Input */}
@@ -125,14 +125,14 @@ export default function BottleneckPage() {
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
                 placeholder="e.g., My SaaS Company"
-                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-amber-600"
+                className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-sky-600"
               />
             </div>
 
             {/* Start Button */}
             <button
               onClick={handleStartQuiz}
-              className="w-full py-4 px-6 bg-amber-600 text-white font-semibold rounded-xl hover:bg-amber-500 transition-colors text-lg"
+              className="w-full py-4 px-6 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-500 transition-colors text-lg"
             >
               Start Diagnostic (8 Questions)
             </button>

@@ -54,7 +54,7 @@ export default function QuickActions({ onSelect, disabled }: QuickActionsProps) 
             key={action.label}
             onClick={() => onSelect(action.prompt)}
             disabled={disabled}
-            className="inline-flex items-center px-3 py-1.5 bg-zinc-800 border border-zinc-700 rounded-full text-sm text-zinc-200 hover:bg-zinc-700 hover:border-amber-600/50 hover:text-amber-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center px-3 py-1.5 bg-zinc-800 border border-zinc-700 rounded-full text-sm text-zinc-200 hover:bg-zinc-700 hover:border-sky-600/50 hover:text-sky-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {action.label}
           </button>

@@ -88,7 +88,7 @@ export default function GeneratorPage() {
               <div className="flex gap-2">
                 <button
                   onClick={copyToClipboard}
-                  className="px-4 py-2 text-sm font-medium text-amber-400 border border-amber-600 rounded-lg hover:bg-amber-900/30 transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-sky-400 border border-sky-600 rounded-lg hover:bg-sky-900/30 transition-colors"
                 >
                   Copy to Clipboard
                 </button>
@@ -140,7 +140,7 @@ export default function GeneratorPage() {
                 <button
                   key={playbook.id}
                   onClick={() => setSelectedType(playbook.id)}
-                  className="text-left bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-amber-600/50 transition-colors"
+                  className="text-left bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors"
                 >
                   <div className="text-4xl mb-3">{playbook.icon}</div>
                   <h3 className="text-lg font-semibold text-white mb-2">{playbook.title}</h3>
@@ -186,7 +186,7 @@ function PlaybookForm({
               value={formData[field.key] || ''}
               onChange={(e) => updateField(field.key, e.target.value)}
               placeholder={field.placeholder}
-              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 min-h-[100px]"
+              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[100px]"
             />
           ) : (
             <input
@@ -194,7 +194,7 @@ function PlaybookForm({
               value={formData[field.key] || ''}
               onChange={(e) => updateField(field.key, e.target.value)}
               placeholder={field.placeholder}
-              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
             />
           )}
         </div>
@@ -202,7 +202,7 @@ function PlaybookForm({
       <button
         onClick={onGenerate}
         disabled={isGenerating}
-        className="w-full px-6 py-4 text-lg font-medium bg-amber-600 text-white rounded-xl hover:bg-amber-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors"
+        className="w-full px-6 py-4 text-lg font-medium bg-sky-600 text-white rounded-xl hover:bg-sky-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors"
       >
         {isGenerating ? 'Generating...' : 'Generate Playbook'}
       </button>

@@ -62,7 +62,7 @@ export function getTierColorClass(tier: RatingTier): {
     case 'ratio5to10':
       return { bg: 'bg-emerald-900/30', text: 'text-emerald-400', border: 'border-emerald-600' };
     case 'above10':
-      return { bg: 'bg-amber-900/30', text: 'text-amber-400', border: 'border-amber-600' };
+      return { bg: 'bg-sky-900/30', text: 'text-sky-400', border: 'border-sky-600' };
   }
 }
 

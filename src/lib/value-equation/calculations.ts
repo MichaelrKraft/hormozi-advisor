@@ -362,7 +362,7 @@ export function getOverallInterpretation(rating: ValueRating): {
       title: 'GRAND SLAM OFFER',
       message: "Your offer is exceptional. People would feel stupid saying no to this.",
       hormozi: "This is what we're looking for. When the value equation is this lopsided in the customer's favor, sales become easy. Protect this offer. Scale it.",
-      color: 'amber',
+      color: 'sky',
     },
   };
 

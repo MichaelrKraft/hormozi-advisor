@@ -20,7 +20,7 @@ export default function ResultsDisplay({ results, recommendations, onSaveSnapsho
   const handleExportPDF = () => {
     const scoreColor = tier === 'above10' || tier === 'ratio5to10' ? 'emerald'
       : tier === 'below1' || tier === 'ratio1to2' ? 'red'
-      : 'amber';
+      : 'sky';
 
     generatePDF({
       title: 'LTV/CAC Analysis',
@@ -93,8 +93,8 @@ export default function ResultsDisplay({ results, recommendations, onSaveSnapsho
       </div>
 
       {/* Hormozi's Take */}
-      <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-6">
-        <div className="text-amber-400 font-semibold mb-2">
+      <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-6">
+        <div className="text-sky-400 font-semibold mb-2">
           Hormozi&apos;s Take:
         </div>
         <p className="text-zinc-300 italic">&quot;{interpretation.hormozi}&quot;</p>
@@ -127,7 +127,7 @@ export default function ResultsDisplay({ results, recommendations, onSaveSnapsho
 
         <Link
           href={`/chat?context=calculator&ltv=${results.ltv}&cac=${results.cac}&ratio=${results.ratio}`}
-          className="block w-full py-3 px-4 bg-amber-600 text-white font-semibold rounded-lg text-center hover:bg-amber-500 transition-colors"
+          className="block w-full py-3 px-4 bg-sky-600 text-white font-semibold rounded-lg text-center hover:bg-sky-500 transition-colors"
         >
           Discuss My Numbers with Hormozi
         </Link>

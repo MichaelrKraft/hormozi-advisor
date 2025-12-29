@@ -64,10 +64,10 @@ export default function ConversationList({
             onNew();
             onClose();
           }}
-          className="w-full px-4 py-3 text-left bg-amber-600/10 border-b border-zinc-700 hover:bg-amber-600/20 transition-colors flex items-center gap-2"
+          className="w-full px-4 py-3 text-left bg-sky-600/10 border-b border-zinc-700 hover:bg-sky-600/20 transition-colors flex items-center gap-2"
         >
-          <span className="text-amber-400">+</span>
-          <span className="text-amber-400 font-medium">New Conversation</span>
+          <span className="text-sky-400">+</span>
+          <span className="text-sky-400 font-medium">New Conversation</span>
         </button>
 
         {/* Conversation List */}
@@ -92,7 +92,7 @@ export default function ConversationList({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       {conv.id === currentId && (
-                        <span className="w-2 h-2 bg-amber-400 rounded-full flex-shrink-0" />
+                        <span className="w-2 h-2 bg-sky-400 rounded-full flex-shrink-0" />
                       )}
                       <h4 className="text-white font-medium truncate text-sm">
                         {conv.title}
@@ -108,7 +108,7 @@ export default function ConversationList({
                       {conv.industry && (
                         <>
                           <span>•</span>
-                          <span className="text-amber-400/60">{conv.industry}</span>
+                          <span className="text-sky-400/60">{conv.industry}</span>
                         </>
                       )}
                     </div>

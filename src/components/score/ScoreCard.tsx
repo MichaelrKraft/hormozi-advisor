@@ -76,7 +76,7 @@ export default function ScoreCard({ title, icon, href, toolScore, details }: Sco
           {/* Link to tool */}
           <Link
             href={href}
-            className="mt-4 block text-center text-sm text-zinc-400 hover:text-amber-400 transition-colors"
+            className="mt-4 block text-center text-sm text-zinc-400 hover:text-sky-400 transition-colors"
           >
             Update Analysis →
           </Link>
@@ -91,7 +91,7 @@ export default function ScoreCard({ title, icon, href, toolScore, details }: Sco
             <p className="text-zinc-500 text-sm mb-4">Not yet completed</p>
             <Link
               href={href}
-              className="inline-block px-4 py-2 bg-amber-600/20 text-amber-400 rounded-lg text-sm font-medium hover:bg-amber-600/30 transition-colors"
+              className="inline-block px-4 py-2 bg-sky-600/20 text-sky-400 rounded-lg text-sm font-medium hover:bg-sky-600/30 transition-colors"
             >
               Complete {title}
             </Link>
@@ -113,7 +113,7 @@ function getBarColor(rating: HealthRating): string {
     case 'good':
       return 'bg-emerald-500';
     case 'excellent':
-      return 'bg-amber-500';
+      return 'bg-sky-500';
   }
 }
 
@@ -130,7 +130,7 @@ export function ScoreDetail({
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-zinc-500">{label}</span>
-      <span className={highlight ? 'text-amber-400 font-medium' : 'text-zinc-300'}>
+      <span className={highlight ? 'text-sky-400 font-medium' : 'text-zinc-300'}>
         {value}
       </span>
     </div>

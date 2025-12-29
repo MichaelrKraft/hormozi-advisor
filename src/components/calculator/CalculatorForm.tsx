@@ -68,7 +68,7 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
         <select
           value={selectedPreset}
           onChange={(e) => handlePresetChange(e.target.value)}
-          className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-amber-500 focus:outline-none"
+          className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-sky-500 focus:outline-none"
         >
           {INDUSTRY_PRESETS.map((preset) => (
             <option key={preset.name} value={preset.name}>
@@ -160,7 +160,7 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
         disabled={!isValid}
         className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-colors ${
           isValid
-            ? 'bg-amber-600 text-white hover:bg-amber-500 cursor-pointer'
+            ? 'bg-sky-600 text-white hover:bg-sky-500 cursor-pointer'
             : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
         }`}
       >
@@ -218,7 +218,7 @@ function InputField({
           placeholder="0"
           step="any"
           min="0"
-          className={`w-full py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-amber-500 focus:outline-none ${
+          className={`w-full py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-sky-500 focus:outline-none ${
             prefix ? 'pl-8 pr-4' : 'px-4'
           } ${suffix ? 'pr-20' : ''}`}
         />

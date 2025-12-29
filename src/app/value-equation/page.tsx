@@ -109,7 +109,7 @@ export default function ValueEquationPage() {
             value={offerName}
             onChange={(e) => setOfferName(e.target.value)}
             placeholder="e.g., 12-Week Transformation Program"
-            className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-amber-600"
+            className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-sky-600"
           />
         </div>
 
@@ -162,7 +162,7 @@ export default function ValueEquationPage() {
         {!showResults ? (
           <button
             onClick={handleCalculate}
-            className="w-full py-4 px-6 bg-amber-600 text-white font-semibold rounded-xl hover:bg-amber-500 transition-colors text-lg"
+            className="w-full py-4 px-6 bg-sky-600 text-white font-semibold rounded-xl hover:bg-sky-500 transition-colors text-lg"
           >
             Calculate My Offer Value
           </button>
@@ -198,13 +198,13 @@ export default function ValueEquationPage() {
             <div className="flex items-center justify-between">
               <span className="text-zinc-400 text-sm">Live Score Preview:</span>
               <div className="flex items-center gap-3">
-                <span className="text-2xl font-bold text-amber-400">
+                <span className="text-2xl font-bold text-sky-400">
                   {results.score.toFixed(1)}
                 </span>
                 <span
                   className={`text-xs px-2 py-1 rounded ${
                     results.rating === 'exceptional'
-                      ? 'bg-amber-900/50 text-amber-400'
+                      ? 'bg-sky-900/50 text-sky-400'
                       : results.rating === 'strong'
                       ? 'bg-emerald-900/50 text-emerald-400'
                       : results.rating === 'good'

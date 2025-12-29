@@ -29,7 +29,7 @@ export default function Home() {
           <div className="hidden md:flex gap-2">
             <Link
               href="/score"
-              className="px-3 py-2 text-sm font-medium text-amber-400 hover:text-amber-300 border border-amber-600/50 rounded-lg hover:border-amber-500 transition-colors"
+              className="px-3 py-2 text-sm font-medium text-sky-400 hover:text-sky-300 border border-sky-600/50 rounded-lg hover:border-sky-500 transition-colors"
             >
               My Score
             </Link>
@@ -59,7 +59,7 @@ export default function Home() {
             </Link>
             <Link
               href="/chat"
-              className="px-3 py-2 text-sm font-medium bg-amber-600 text-white rounded-lg hover:bg-amber-500 transition-colors"
+              className="px-3 py-2 text-sm font-medium bg-sky-600 text-white rounded-lg hover:bg-sky-500 transition-colors"
             >
               Chat
             </Link>
@@ -88,14 +88,14 @@ export default function Home() {
           <div className="md:hidden border-t border-zinc-800 px-4 py-4 space-y-2">
             <Link
               href="/score"
-              className="block px-4 py-3 text-amber-400 bg-amber-600/10 rounded-lg font-medium"
+              className="block px-4 py-3 text-sky-400 bg-sky-600/10 rounded-lg font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
               📊 My Score
             </Link>
             <Link
               href="/chat"
-              className="block px-4 py-3 text-white bg-amber-600 rounded-lg font-medium"
+              className="block px-4 py-3 text-white bg-sky-600 rounded-lg font-medium"
               onClick={() => setMobileMenuOpen(false)}
             >
               💬 Chat with Hormozi
@@ -151,7 +151,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-6">
             Business Advice from{' '}
-            <span className="text-amber-400">Alex Hormozi</span>
+            <span className="text-sky-400">Alex Hormozi</span>
           </h1>
           <p className="text-lg md:text-xl text-zinc-400 mb-6 md:mb-8 max-w-2xl mx-auto">
             Get direct, no-BS guidance using the frameworks from $100M Offers
@@ -161,13 +161,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link
               href="/chat"
-              className="px-8 py-4 text-lg font-semibold bg-amber-600 text-white rounded-xl hover:bg-amber-500 transition-colors"
+              className="px-8 py-4 text-lg font-semibold bg-sky-600 text-white rounded-xl hover:bg-sky-500 transition-colors"
             >
               Chat with Hormozi
             </Link>
             <Link
               href="/bottleneck"
-              className="px-8 py-4 text-lg font-semibold text-amber-400 border-2 border-amber-600 rounded-xl hover:bg-amber-900/30 transition-colors"
+              className="px-8 py-4 text-lg font-semibold text-sky-400 border-2 border-sky-600 rounded-xl hover:bg-sky-900/30 transition-colors"
             >
               Find Your Bottleneck
             </Link>
@@ -222,7 +222,7 @@ export default function Home() {
                   </div>
                   <p className="text-zinc-400 text-sm">{framework.description}</p>
                   {framework.link && (
-                    <span className="inline-block mt-3 text-amber-400 text-sm font-medium">
+                    <span className="inline-block mt-3 text-sky-400 text-sm font-medium">
                       Try Tool →
                     </span>
                   )}
@@ -233,14 +233,14 @@ export default function Home() {
                 <Link
                   key={framework.title}
                   href={framework.link}
-                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-amber-600/50 transition-colors block"
+                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors block"
                 >
                   {content}
                 </Link>
               ) : (
                 <div
                   key={framework.title}
-                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-amber-600/50 transition-colors opacity-60"
+                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors opacity-60"
                 >
                   {content}
                   <span className="inline-block mt-3 text-zinc-500 text-sm">
@@ -272,7 +272,7 @@ export default function Home() {
               <Link
                 key={playbook.title}
                 href="/generator"
-                className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-amber-600/50 transition-colors text-left"
+                className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors text-left"
               >
                 <h3 className="text-md font-semibold text-white mb-1">{playbook.title}</h3>
                 <p className="text-zinc-500 text-sm">{playbook.desc}</p>
@@ -326,7 +326,7 @@ export default function Home() {
           </p>
           <Link
             href="/chat"
-            className="inline-block px-8 py-4 text-lg font-semibold bg-amber-600 text-white rounded-xl hover:bg-amber-500 transition-colors"
+            className="inline-block px-8 py-4 text-lg font-semibold bg-sky-600 text-white rounded-xl hover:bg-sky-500 transition-colors"
           >
             Get Started Free
           </Link>
@@ -363,14 +363,14 @@ function TestimonialCard({
       {/* Stars */}
       <div className="flex gap-1 mb-4">
         {Array.from({ length: rating }).map((_, i) => (
-          <span key={i} className="text-amber-400">★</span>
+          <span key={i} className="text-sky-400">★</span>
         ))}
       </div>
       {/* Quote */}
       <p className="text-zinc-300 text-sm mb-4 italic">&quot;{quote}&quot;</p>
       {/* Author */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
+        <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-sky-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
           {name.split(' ').map(n => n[0]).join('')}
         </div>
         <div>

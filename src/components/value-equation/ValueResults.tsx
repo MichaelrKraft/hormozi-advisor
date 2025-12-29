@@ -33,7 +33,7 @@ export default function ValueResults({
       yellow: { bg: 'bg-yellow-900/30', text: 'text-yellow-400', border: 'border-yellow-600' },
       green: { bg: 'bg-green-900/30', text: 'text-green-400', border: 'border-green-600' },
       emerald: { bg: 'bg-emerald-900/30', text: 'text-emerald-400', border: 'border-emerald-600' },
-      amber: { bg: 'bg-amber-900/30', text: 'text-amber-400', border: 'border-amber-600' },
+      sky: { bg: 'bg-sky-900/30', text: 'text-sky-400', border: 'border-sky-600' },
     };
     return colorMap[color] || colorMap.yellow;
   };
@@ -43,7 +43,7 @@ export default function ValueResults({
   const handleExportPDF = () => {
     const scoreColor = results.rating === 'exceptional' || results.rating === 'strong' ? 'emerald'
       : results.rating === 'terrible' || results.rating === 'weak' ? 'red'
-      : 'amber';
+      : 'sky';
 
     generatePDF({
       title: 'Value Equation Analysis',
@@ -130,8 +130,8 @@ export default function ValueResults({
       </div>
 
       {/* Hormozi's Take */}
-      <div className="bg-zinc-800/50 border-l-4 border-amber-500 rounded-r-xl p-5">
-        <div className="text-amber-400 font-semibold mb-2">Hormozi&apos;s Take:</div>
+      <div className="bg-zinc-800/50 border-l-4 border-sky-500 rounded-r-xl p-5">
+        <div className="text-sky-400 font-semibold mb-2">Hormozi&apos;s Take:</div>
         <p className="text-zinc-300 italic">&quot;{interpretation.hormozi}&quot;</p>
       </div>
 
@@ -145,7 +145,7 @@ export default function ValueResults({
         </div>
         <p className="text-zinc-400 mb-4">{weakestFeedback.feedback}</p>
         <div className="bg-zinc-900/50 rounded-lg p-4 mb-4">
-          <p className="text-amber-400/90 italic text-sm">
+          <p className="text-sky-400/90 italic text-sm">
             &quot;{weakestFeedback.hormoziTip}&quot;
           </p>
         </div>
@@ -153,7 +153,7 @@ export default function ValueResults({
           <div className="text-sm font-medium text-zinc-300 mb-2">Action Items:</div>
           {weakestFeedback.improvementActions.map((action, i) => (
             <div key={i} className="flex items-start gap-2 text-sm text-zinc-400">
-              <span className="text-amber-500 mt-1">→</span>
+              <span className="text-sky-500 mt-1">→</span>
               <span>{action}</span>
             </div>
           ))}
@@ -245,7 +245,7 @@ export default function ValueResults({
 
         <Link
           href={`/chat?context=value-equation&score=${results.score}&weakest=${results.weakestDimension}`}
-          className="block w-full py-3 px-4 bg-amber-600 text-white font-semibold rounded-lg text-center hover:bg-amber-500 transition-colors"
+          className="block w-full py-3 px-4 bg-sky-600 text-white font-semibold rounded-lg text-center hover:bg-sky-500 transition-colors"
         >
           Discuss How to Improve with Hormozi
         </Link>

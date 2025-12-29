@@ -14,7 +14,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
       <div
         className={`max-w-[80%] rounded-2xl px-4 py-3 ${
           isUser
-            ? 'bg-amber-600 text-white rounded-br-md'
+            ? 'bg-sky-600 text-white rounded-br-md'
             : 'bg-zinc-800 text-zinc-100 border border-zinc-700 rounded-bl-md'
         }`}
       >
@@ -24,14 +24,14 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
             // Handle headers
             if (line.startsWith('### ')) {
               return (
-                <h3 key={i} className={`font-bold text-base mt-3 mb-1 ${!isUser && 'text-amber-400'}`}>
+                <h3 key={i} className={`font-bold text-base mt-3 mb-1 ${!isUser && 'text-sky-400'}`}>
                   {line.replace('### ', '')}
                 </h3>
               );
             }
             if (line.startsWith('## ')) {
               return (
-                <h2 key={i} className={`font-bold text-lg mt-4 mb-2 ${!isUser && 'text-amber-400'}`}>
+                <h2 key={i} className={`font-bold text-lg mt-4 mb-2 ${!isUser && 'text-sky-400'}`}>
                   {line.replace('## ', '')}
                 </h2>
               );
@@ -59,7 +59,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
                 <p key={i}>
                   {parts.map((part, j) =>
                     j % 2 === 1 ? (
-                      <strong key={j} className={!isUser ? 'text-amber-300' : ''}>
+                      <strong key={j} className={!isUser ? 'text-sky-300' : ''}>
                         {part}
                       </strong>
                     ) : (
@@ -75,7 +75,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         </div>
         <div
           className={`text-xs mt-2 ${
-            isUser ? 'text-amber-200' : 'text-zinc-500'
+            isUser ? 'text-sky-200' : 'text-zinc-500'
           }`}
         >
           {new Date(message.timestamp).toLocaleTimeString([], {

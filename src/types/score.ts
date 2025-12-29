@@ -128,8 +128,8 @@ export const RATING_META: Record<HealthRating, { label: string; color: string; b
   },
   excellent: {
     label: 'Excellent',
-    color: 'text-amber-400',
-    bgColor: 'bg-amber-500/10 border-amber-500/20',
+    color: 'text-sky-400',
+    bgColor: 'bg-sky-500/10 border-sky-500/20',
     emoji: '⭐',
   },
 };

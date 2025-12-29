@@ -141,7 +141,7 @@ export function getOfferRating(score: number): {
   if (score >= 90) {
     return {
       label: 'Grand Slam Offer',
-      color: 'amber',
+      color: 'sky',
       hormozi: "This is what we're looking for. They'd feel stupid saying no.",
     };
   }

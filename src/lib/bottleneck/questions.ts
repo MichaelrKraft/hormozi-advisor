@@ -305,7 +305,7 @@ export const BOTTLENECK_META: Record<BottleneckArea, { label: string; color: str
   },
   pricing: {
     label: 'Pricing & Margins',
-    color: 'amber',
+    color: 'sky',
     icon: '💵',
   },
   retention: {

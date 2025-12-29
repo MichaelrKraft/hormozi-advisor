@@ -199,7 +199,7 @@ export default function ScorePage() {
             />
 
             {/* Playbook Generator Card - Always shows as a CTA */}
-            <div className="bg-gradient-to-br from-amber-600/20 to-amber-800/20 border border-amber-600/30 rounded-xl p-5 flex flex-col">
+            <div className="bg-gradient-to-br from-sky-600/20 to-sky-800/20 border border-sky-600/30 rounded-xl p-5 flex flex-col">
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">📋</span>
                 <h3 className="font-semibold text-white">Playbook Generator</h3>
@@ -209,7 +209,7 @@ export default function ScorePage() {
               </p>
               <Link
                 href="/generator"
-                className="block text-center px-4 py-2 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-500 transition-colors"
+                className="block text-center px-4 py-2 bg-sky-600 text-white rounded-lg font-medium hover:bg-sky-500 transition-colors"
               >
                 Create Playbook
               </Link>
@@ -225,7 +225,7 @@ export default function ScorePage() {
           </p>
           <Link
             href="/chat"
-            className="inline-block px-6 py-3 bg-amber-600 text-white rounded-xl font-medium hover:bg-amber-500 transition-colors"
+            className="inline-block px-6 py-3 bg-sky-600 text-white rounded-xl font-medium hover:bg-sky-500 transition-colors"
           >
             💬 Chat with Hormozi AI
           </Link>
