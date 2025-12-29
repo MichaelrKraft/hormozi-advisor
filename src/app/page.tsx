@@ -188,25 +188,25 @@ export default function Home() {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/calculator"
-              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors text-sm"
+              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover-glow text-sm"
             >
               📊 LTV/CAC Calculator
             </Link>
             <Link
               href="/value-equation"
-              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors text-sm"
+              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover-glow text-sm"
             >
               ⚖️ Value Equation
             </Link>
             <Link
               href="/offer-stack"
-              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors text-sm"
+              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover-glow text-sm"
             >
               🎯 Offer Builder
             </Link>
             <Link
               href="/pricing"
-              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover:border-zinc-500 transition-colors text-sm"
+              className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-300 hover:text-white hover-glow text-sm"
             >
               💵 Pricing Tool
             </Link>
@@ -245,14 +245,14 @@ export default function Home() {
                 <Link
                   key={framework.title}
                   href={framework.link}
-                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors block"
+                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover-glow block"
                 >
                   {content}
                 </Link>
               ) : (
                 <div
                   key={framework.title}
-                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors opacity-60"
+                  className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover-glow opacity-60"
                 >
                   {content}
                   <span className="inline-block mt-3 text-zinc-500 text-sm">
@@ -284,7 +284,7 @@ export default function Home() {
               <Link
                 key={playbook.title}
                 href="/generator"
-                className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover:border-sky-600/50 transition-colors text-left"
+                className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 hover-glow text-left"
               >
                 <h3 className="text-md font-semibold text-white mb-1">{playbook.title}</h3>
                 <p className="text-zinc-500 text-sm">{playbook.desc}</p>

@@ -50,19 +50,20 @@ body {
 
 /* Shiny Text Animation */
 .shiny-text {
+  display: inline-block;
   background: linear-gradient(
-    120deg,
+    90deg,
     #38bdf8 0%,
-    #38bdf8 40%,
+    #38bdf8 35%,
     #ffffff 50%,
-    #38bdf8 60%,
+    #38bdf8 65%,
     #38bdf8 100%
   );
-  background-size: 200% 100%;
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: shine var(--shine-duration, 3s) linear infinite;
+  animation: shine var(--shine-duration, 3s) ease-in-out infinite;
 }
 
 .shiny-text--disabled {
@@ -73,9 +74,19 @@ body {
 
 @keyframes shine {
   0% {
-    background-position: 100% 50%;
+    background-position: 200% 50%;
   }
   100% {
     background-position: -100% 50%;
   }
+}
+
+/* Orange glow hover effect */
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.4), 0 0 40px rgba(249, 115, 22, 0.2);
 }
