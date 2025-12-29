@@ -66,7 +66,6 @@ export default function ScorePage() {
             {/* LTV/CAC Card */}
             <ScoreCard
               title="LTV/CAC Ratio"
-              icon="📊"
               href="/calculator"
               toolScore={score.ltvCac}
               details={
@@ -97,7 +96,6 @@ export default function ScorePage() {
             {/* Value Equation Card */}
             <ScoreCard
               title="Value Equation"
-              icon="⚖️"
               href="/value-equation"
               toolScore={score.valueEquation}
               details={
@@ -124,7 +122,6 @@ export default function ScorePage() {
             {/* Bottleneck Card */}
             <ScoreCard
               title="Bottleneck"
-              icon="🎯"
               href="/bottleneck"
               toolScore={score.bottleneck}
               details={
@@ -147,7 +144,6 @@ export default function ScorePage() {
             {/* Pricing Card */}
             <ScoreCard
               title="Pricing Analysis"
-              icon="💵"
               href="/pricing"
               toolScore={score.pricing}
               details={
@@ -174,7 +170,6 @@ export default function ScorePage() {
             {/* Offer Stack Card */}
             <ScoreCard
               title="Offer Stack"
-              icon="🏆"
               href="/offer-stack"
               toolScore={score.offerStack}
               details={
@@ -200,8 +195,7 @@ export default function ScorePage() {
 
             {/* Playbook Generator Card - Always shows as a CTA */}
             <div className="bg-gradient-to-br from-sky-600/20 to-sky-800/20 border border-sky-600/30 rounded-xl p-5 flex flex-col">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-2xl">📋</span>
+              <div className="mb-4">
                 <h3 className="font-semibold text-white">Playbook Generator</h3>
               </div>
               <p className="text-zinc-400 text-sm mb-4 flex-1">

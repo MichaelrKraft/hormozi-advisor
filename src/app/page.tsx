@@ -153,14 +153,14 @@ export default function Home() {
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-6">
             <BlurText
               text="Business Advice from"
-              delay={0.04}
+              delay={0.12}
               animateBy="words"
               direction="top"
               className="text-white"
             />{' '}
             <BlurText
               text="Alex Hormozi"
-              delay={0.08}
+              delay={0.15}
               animateBy="words"
               direction="top"
               className="text-sky-400"

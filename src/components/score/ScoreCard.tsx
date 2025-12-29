@@ -6,7 +6,7 @@ import { RATING_META } from '@/types/score';
 
 interface ScoreCardProps {
   title: string;
-  icon: string;
+  icon?: string;
   href: string;
   toolScore: ToolScore;
   details?: React.ReactNode;
@@ -37,7 +37,7 @@ export default function ScoreCard({ title, icon, href, toolScore, details }: Sco
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{icon}</span>
+          {icon && <span className="text-2xl">{icon}</span>}
           <h3 className="font-semibold text-white">{title}</h3>
         </div>
         {status === 'complete' && (
@@ -85,9 +85,6 @@ export default function ScoreCard({ title, icon, href, toolScore, details }: Sco
         <>
           {/* Incomplete State */}
           <div className="py-6 text-center">
-            <div className="text-zinc-500 mb-4">
-              <span className="text-4xl opacity-50">📊</span>
-            </div>
             <p className="text-zinc-500 text-sm mb-4">Not yet completed</p>
             <Link
               href={href}
