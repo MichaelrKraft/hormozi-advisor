@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import BlurText from '@/components/ui/BlurText';
 
 const FRAMEWORKS = [
   { title: 'LTV to CAC Ratio', description: 'The fundamental business equation. High ratio = "License to Print Money"', link: '/calculator', icon: '📊' },
@@ -150,8 +151,20 @@ export default function Home() {
       <section className="py-12 md:py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 md:mb-6">
-            Business Advice from{' '}
-            <span className="text-sky-400">Alex Hormozi</span>
+            <BlurText
+              text="Business Advice from"
+              delay={0.04}
+              animateBy="words"
+              direction="top"
+              className="text-white"
+            />{' '}
+            <BlurText
+              text="Alex Hormozi"
+              delay={0.08}
+              animateBy="words"
+              direction="top"
+              className="text-sky-400"
+            />
           </h1>
           <p className="text-lg md:text-xl text-zinc-400 mb-6 md:mb-8 max-w-2xl mx-auto">
             Get direct, no-BS guidance using the frameworks from $100M Offers
