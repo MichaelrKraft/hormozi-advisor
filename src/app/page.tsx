@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import BlurText from '@/components/ui/BlurText';
+import ShinyText from '@/components/ui/ShinyText';
 
 const FRAMEWORKS = [
   { title: 'LTV to CAC Ratio', description: 'The fundamental business equation. High ratio = "License to Print Money"', link: '/calculator', icon: '📊' },
@@ -158,12 +159,10 @@ export default function Home() {
               direction="top"
               className="text-white"
             />{' '}
-            <BlurText
+            <ShinyText
               text="Alex Hormozi"
-              delay={0.15}
-              animateBy="words"
-              direction="top"
-              className="text-sky-400"
+              speed={3}
+              className="text-3xl sm:text-5xl md:text-6xl font-bold"
             />
           </h1>
           <p className="text-lg md:text-xl text-zinc-400 mb-6 md:mb-8 max-w-2xl mx-auto">

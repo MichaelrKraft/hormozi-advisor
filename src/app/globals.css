@@ -47,3 +47,35 @@ body {
   background: rgba(212, 175, 55, 0.3);
   color: #ffffff;
 }
+
+/* Shiny Text Animation */
+.shiny-text {
+  background: linear-gradient(
+    120deg,
+    #38bdf8 0%,
+    #38bdf8 40%,
+    #ffffff 50%,
+    #38bdf8 60%,
+    #38bdf8 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine var(--shine-duration, 3s) linear infinite;
+}
+
+.shiny-text--disabled {
+  background: none;
+  color: #38bdf8;
+  animation: none;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: -100% 50%;
+  }
+}
