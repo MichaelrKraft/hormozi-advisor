@@ -210,7 +210,7 @@ export default function LandingPage() {
             <div className="text-zinc-500 text-sm">Businesses Analyzed</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-white">9</div>
+            <div className="text-2xl font-bold text-white">6</div>
             <div className="text-zinc-500 text-sm">Proven Frameworks</div>
           </div>
           <div>
@@ -300,7 +300,7 @@ export default function LandingPage() {
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
-            9 Frameworks to Scale Your Business
+            6 Frameworks to Scale Your Business
           </h2>
           <p className="text-zinc-400 text-center mb-12 max-w-2xl mx-auto">
             Every tool is based on Alex Hormozi's proven methodology.
@@ -491,7 +491,7 @@ export default function LandingPage() {
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-3 text-zinc-300">
                   <span className="text-sky-400">✓</span>
-                  All 9 business frameworks
+                  All 6 business frameworks
                 </li>
                 <li className="flex items-center gap-3 text-zinc-300">
                   <span className="text-sky-400">✓</span>
@@ -534,7 +534,7 @@ export default function LandingPage() {
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-3 text-zinc-300">
                   <span className="text-sky-400">✓</span>
-                  All 9 business frameworks
+                  All 6 business frameworks
                 </li>
                 <li className="flex items-center gap-3 text-zinc-300">
                   <span className="text-sky-400">✓</span>
