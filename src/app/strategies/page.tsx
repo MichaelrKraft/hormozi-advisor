@@ -1,18 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import MobileHeader from '@/components/layout/MobileHeader';
 import MetricsInput from '@/components/strategies/MetricsInput';
 import StrategySimulator from '@/components/strategies/StrategySimulator';
 import StrategyComparison from '@/components/strategies/StrategyComparison';
-import type { BaseMetrics, IndustryType, StrategyType, SimulationState } from '@/types/strategies';
+import type { BaseMetrics, IndustryType, StrategyType } from '@/types/strategies';
 import { industryDefaults, industryNames } from '@/lib/calculator/industryDefaults';
 import { getDetailedRecommendation } from '@/lib/calculator/recommender';
 
 type ViewMode = 'simulator' | 'compare';
 
-export default function StrategiesPage() {
+function StrategiesContent() {
   const searchParams = useSearchParams();
 
   // Initialize state from URL params or defaults
@@ -59,7 +59,7 @@ export default function StrategiesPage() {
     if (industryParam && Object.keys(industryDefaults).includes(industryParam)) {
       setIndustry(industryParam as IndustryType);
     }
-  }, [searchParams]);
+  }, [searchParams, industry]);
 
   const handleMetricsSubmit = (newMetrics: BaseMetrics, newIndustry: IndustryType) => {
     setMetrics(newMetrics);
@@ -78,6 +78,108 @@ export default function StrategiesPage() {
   };
 
   return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      {!hasMetrics ? (
+        // Metrics Input Form
+        <MetricsInput
+          onSubmit={handleMetricsSubmit}
+          initialIndustry={industry}
+        />
+      ) : (
+        // Strategy Simulator
+        <div className="space-y-8">
+          {/* Current Metrics Display */}
+          <div className="bg-zinc-800/50 rounded-xl p-6 border border-zinc-700">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-6">
+                <div>
+                  <span className="text-zinc-400 text-sm">LTV</span>
+                  <p className="text-2xl font-bold text-white">${metrics.ltv.toLocaleString()}</p>
+                </div>
+                <div>
+                  <span className="text-zinc-400 text-sm">CAC</span>
+                  <p className="text-2xl font-bold text-white">${metrics.cac.toLocaleString()}</p>
+                </div>
+                <div>
+                  <span className="text-zinc-400 text-sm">Ratio</span>
+                  <p className="text-2xl font-bold text-sky-400">{metrics.ratio.toFixed(1)}x</p>
+                </div>
+                <div>
+                  <span className="text-zinc-400 text-sm">Industry</span>
+                  <p className="text-lg font-medium text-white">{industryNames[industry]}</p>
+                </div>
+              </div>
+              <button
+                onClick={handleReset}
+                className="text-zinc-400 hover:text-white transition-colors text-sm"
+              >
+                Change metrics →
+              </button>
+            </div>
+          </div>
+
+          {/* View Mode Tabs */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => setViewMode('simulator')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                viewMode === 'simulator'
+                  ? 'bg-sky-600 text-white'
+                  : 'bg-zinc-800 text-zinc-400 hover:text-white'
+              }`}
+            >
+              📈 Simulate Strategy
+            </button>
+            <button
+              onClick={() => setViewMode('compare')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                viewMode === 'compare'
+                  ? 'bg-sky-600 text-white'
+                  : 'bg-zinc-800 text-zinc-400 hover:text-white'
+              }`}
+            >
+              📊 Compare All
+            </button>
+          </div>
+
+          {/* Content based on view mode */}
+          {viewMode === 'simulator' ? (
+            <StrategySimulator
+              metrics={metrics}
+              industry={industry}
+              activeStrategy={activeStrategy}
+              onStrategyChange={setActiveStrategy}
+            />
+          ) : (
+            <StrategyComparison
+              metrics={metrics}
+              industry={industry}
+              onSelectStrategy={(strategy) => {
+                setActiveStrategy(strategy);
+                setViewMode('simulator');
+              }}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="bg-zinc-800/50 rounded-xl p-8 border border-zinc-700 animate-pulse">
+        <div className="h-8 bg-zinc-700 rounded w-1/3 mb-4" />
+        <div className="h-4 bg-zinc-700 rounded w-2/3 mb-2" />
+        <div className="h-4 bg-zinc-700 rounded w-1/2" />
+      </div>
+    </div>
+  );
+}
+
+export default function StrategiesPage() {
+  return (
     <main className="min-h-screen bg-zinc-900">
       <MobileHeader currentPage="tools" />
 
@@ -94,91 +196,9 @@ export default function StrategiesPage() {
         </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {!hasMetrics ? (
-          // Metrics Input Form
-          <MetricsInput
-            onSubmit={handleMetricsSubmit}
-            initialIndustry={industry}
-          />
-        ) : (
-          // Strategy Simulator
-          <div className="space-y-8">
-            {/* Current Metrics Display */}
-            <div className="bg-zinc-800/50 rounded-xl p-6 border border-zinc-700">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex flex-wrap gap-6">
-                  <div>
-                    <span className="text-zinc-400 text-sm">LTV</span>
-                    <p className="text-2xl font-bold text-white">${metrics.ltv.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <span className="text-zinc-400 text-sm">CAC</span>
-                    <p className="text-2xl font-bold text-white">${metrics.cac.toLocaleString()}</p>
-                  </div>
-                  <div>
-                    <span className="text-zinc-400 text-sm">Ratio</span>
-                    <p className="text-2xl font-bold text-sky-400">{metrics.ratio.toFixed(1)}x</p>
-                  </div>
-                  <div>
-                    <span className="text-zinc-400 text-sm">Industry</span>
-                    <p className="text-lg font-medium text-white">{industryNames[industry]}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={handleReset}
-                  className="text-zinc-400 hover:text-white transition-colors text-sm"
-                >
-                  Change metrics →
-                </button>
-              </div>
-            </div>
-
-            {/* View Mode Tabs */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => setViewMode('simulator')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  viewMode === 'simulator'
-                    ? 'bg-sky-600 text-white'
-                    : 'bg-zinc-800 text-zinc-400 hover:text-white'
-                }`}
-              >
-                📈 Simulate Strategy
-              </button>
-              <button
-                onClick={() => setViewMode('compare')}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  viewMode === 'compare'
-                    ? 'bg-sky-600 text-white'
-                    : 'bg-zinc-800 text-zinc-400 hover:text-white'
-                }`}
-              >
-                📊 Compare All
-              </button>
-            </div>
-
-            {/* Content based on view mode */}
-            {viewMode === 'simulator' ? (
-              <StrategySimulator
-                metrics={metrics}
-                industry={industry}
-                activeStrategy={activeStrategy}
-                onStrategyChange={setActiveStrategy}
-              />
-            ) : (
-              <StrategyComparison
-                metrics={metrics}
-                industry={industry}
-                onSelectStrategy={(strategy) => {
-                  setActiveStrategy(strategy);
-                  setViewMode('simulator');
-                }}
-              />
-            )}
-          </div>
-        )}
-      </div>
+      <Suspense fallback={<LoadingFallback />}>
+        <StrategiesContent />
+      </Suspense>
     </main>
   );
 }
