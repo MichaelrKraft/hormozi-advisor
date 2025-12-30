@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { Message } from '@/types';
 import type { Conversation, ConversationMeta } from '@/types/conversation';
 import MessageBubble from './MessageBubble';
@@ -330,8 +331,16 @@ export default function ChatInterface() {
       {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4 -mt-20">
-            <div className="text-6xl mb-4">💰</div>
+          <div className="flex flex-col items-center justify-center h-full text-center px-4 -mt-8">
+            <div className="mb-4">
+              <Image
+                src="/hormozi-logo.png"
+                alt="Alex Hormozi"
+                width={100}
+                height={100}
+                className="rounded-full"
+              />
+            </div>
             <h2 className="text-2xl font-bold text-white mb-2">
               Talk to <span className="text-sky-400">Alex Hormozi AI</span>
             </h2>
