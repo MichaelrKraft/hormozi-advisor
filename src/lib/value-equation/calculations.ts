@@ -350,13 +350,13 @@ export function getOverallInterpretation(rating: ValueRating): {
       title: 'SOLID OFFER',
       message: "Your offer has good perceived value. There's still room to make it irresistible.",
       hormozi: "Now we're talking. You've got something here. A few tweaks and this becomes a Grand Slam Offer.",
-      color: 'green',
+      color: 'sky',
     },
     strong: {
       title: 'STRONG OFFER',
       message: "Your offer has high perceived value. People should feel compelled to buy.",
       hormozi: "This is a strong offer. You've done the work to make it valuable. Focus on traffic and conversion now - the offer itself is solid.",
-      color: 'emerald',
+      color: 'sky',
     },
     exceptional: {
       title: 'GRAND SLAM OFFER',

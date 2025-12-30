@@ -31,8 +31,6 @@ export default function ValueResults({
       red: { bg: 'bg-red-900/30', text: 'text-red-400', border: 'border-red-600' },
       orange: { bg: 'bg-orange-900/30', text: 'text-orange-400', border: 'border-orange-600' },
       yellow: { bg: 'bg-yellow-900/30', text: 'text-yellow-400', border: 'border-yellow-600' },
-      green: { bg: 'bg-green-900/30', text: 'text-green-400', border: 'border-green-600' },
-      emerald: { bg: 'bg-emerald-900/30', text: 'text-emerald-400', border: 'border-emerald-600' },
       sky: { bg: 'bg-sky-900/30', text: 'text-sky-400', border: 'border-sky-600' },
     };
     return colorMap[color] || colorMap.yellow;
@@ -41,7 +39,7 @@ export default function ValueResults({
   const colors = getColorClasses(interpretation.color);
 
   const handleExportPDF = () => {
-    const scoreColor = results.rating === 'exceptional' || results.rating === 'strong' ? 'emerald'
+    const scoreColor = results.rating === 'exceptional' || results.rating === 'strong' ? 'sky'
       : results.rating === 'terrible' || results.rating === 'weak' ? 'red'
       : 'sky';
 
@@ -105,12 +103,12 @@ export default function ValueResults({
         <div className="text-sm text-zinc-400 mb-3 text-center">Your Value Equation</div>
         <div className="flex items-center justify-center gap-2 text-lg">
           <div className="bg-zinc-700 rounded-lg px-3 py-2 text-center">
-            <div className="text-emerald-400 font-bold">{inputs.dreamOutcome}</div>
+            <div className="text-sky-400 font-bold">{inputs.dreamOutcome}</div>
             <div className="text-xs text-zinc-500">Dream</div>
           </div>
           <span className="text-zinc-500">×</span>
           <div className="bg-zinc-700 rounded-lg px-3 py-2 text-center">
-            <div className="text-emerald-400 font-bold">{inputs.perceivedLikelihood}</div>
+            <div className="text-sky-400 font-bold">{inputs.perceivedLikelihood}</div>
             <div className="text-xs text-zinc-500">Likelihood</div>
           </div>
           <span className="text-zinc-400 text-2xl mx-2">/</span>
@@ -174,7 +172,7 @@ export default function ValueResults({
             const effectiveScore = info.isNumerator ? score : 11 - score;
             const barColor =
               effectiveScore >= 8
-                ? 'bg-emerald-500'
+                ? 'bg-sky-500'
                 : effectiveScore >= 5
                 ? 'bg-yellow-500'
                 : 'bg-red-500';
@@ -186,7 +184,7 @@ export default function ValueResults({
                   isWeak
                     ? 'bg-red-900/20 border border-red-900/50'
                     : isStrong
-                    ? 'bg-emerald-900/20 border border-emerald-900/50'
+                    ? 'bg-sky-900/20 border border-sky-900/50'
                     : 'bg-zinc-700/30'
                 }`}
               >
@@ -199,7 +197,7 @@ export default function ValueResults({
                       </span>
                     )}
                     {isStrong && (
-                      <span className="text-xs bg-emerald-900/50 text-emerald-400 px-2 py-0.5 rounded">
+                      <span className="text-xs bg-sky-900/50 text-sky-400 px-2 py-0.5 rounded">
                         Strongest
                       </span>
                     )}

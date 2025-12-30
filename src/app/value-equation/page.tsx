@@ -84,16 +84,28 @@ export default function ValueEquationPage() {
         </div>
 
         {/* Formula Display */}
-        <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-4 mb-8">
+        <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-6 mb-8">
           <div className="text-center">
-            <div className="text-sm text-zinc-400 mb-2">The Value Equation</div>
-            <div className="text-xl md:text-2xl font-mono text-white">
-              <span className="text-emerald-400">Value</span> ={' '}
-              <span className="text-emerald-400">(Dream Outcome × Perceived Likelihood)</span>
-              <span className="text-zinc-400"> / </span>
-              <span className="text-red-400">(Time Delay × Effort & Sacrifice)</span>
+            <div className="text-sm text-zinc-400 mb-4">The Value Equation</div>
+            <div className="flex items-center justify-center gap-4">
+              {/* Value = */}
+              <span className="text-xl md:text-2xl font-mono text-white">Value =</span>
+
+              {/* Fraction */}
+              <div className="flex flex-col items-center">
+                {/* Numerator */}
+                <span className="text-lg md:text-xl font-mono text-sky-400 pb-2">
+                  (Dream Outcome × Perceived Likelihood)
+                </span>
+                {/* Fraction line */}
+                <div className="w-full h-[2px] bg-zinc-500" />
+                {/* Denominator */}
+                <span className="text-lg md:text-xl font-mono text-red-400 pt-2">
+                  (Time Delay × Effort & Sacrifice)
+                </span>
+              </div>
             </div>
-            <div className="text-xs text-zinc-500 mt-2">
+            <div className="text-xs text-zinc-500 mt-4">
               Maximize the numerator, minimize the denominator
             </div>
           </div>
@@ -170,7 +182,7 @@ export default function ValueEquationPage() {
           <div className="space-y-6">
             {/* Saved Message */}
             {savedMessage && (
-              <div className="bg-emerald-900/30 border border-emerald-600 rounded-lg p-3 text-emerald-400 text-center">
+              <div className="bg-sky-900/30 border border-sky-600 rounded-lg p-3 text-sky-400 text-center">
                 {savedMessage}
               </div>
             )}
@@ -230,7 +242,7 @@ export default function ValueEquationPage() {
           </h3>
           <div className="grid md:grid-cols-2 gap-4 text-sm">
             <div>
-              <h4 className="text-emerald-400 font-medium mb-1">
+              <h4 className="text-sky-400 font-medium mb-1">
                 Numerator (Maximize These)
               </h4>
               <ul className="text-zinc-400 space-y-1">
