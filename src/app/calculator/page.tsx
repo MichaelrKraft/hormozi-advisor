@@ -147,6 +147,26 @@ export default function CalculatorPage() {
                       <LeverRecommendations recommendations={recommendations} />
                     </div>
                   )}
+
+                  {/* Strategy Simulator CTA */}
+                  <Link
+                    href={`/strategies?ltv=${results.ltv}&cac=${results.cac}&ratio=${results.ratio.toFixed(2)}&margin=${inputs?.grossMarginPercent || ''}&frequency=${inputs?.purchaseFrequency || ''}&aov=${inputs?.averageOrderValue || ''}`}
+                    className="block bg-gradient-to-r from-sky-600 to-sky-500 hover:from-sky-500 hover:to-sky-400 rounded-2xl p-6 transition-all group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-1">
+                          📈 Simulate Growth Strategies
+                        </h3>
+                        <p className="text-sky-100">
+                          See how Hormozi&apos;s 5 strategies would improve your ratio
+                        </p>
+                      </div>
+                      <span className="text-3xl group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
+                    </div>
+                  </Link>
                 </>
               ) : (
                 <div className="bg-zinc-800/50 border border-zinc-700 rounded-2xl p-6 flex items-center justify-center min-h-[400px]">

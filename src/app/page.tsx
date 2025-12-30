@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import BlurText from '@/components/ui/BlurText';
 import ShinyText from '@/components/ui/ShinyText';
 
@@ -16,6 +17,7 @@ const FRAMEWORKS = [
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
 
   return (
     <main className="min-h-screen bg-zinc-900">
@@ -23,36 +25,106 @@ export default function Home() {
       <header className="border-b border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">💰</span>
+            <Image
+              src="/hormozi-logo.png"
+              alt="Hormozi Advisor Logo"
+              width={50}
+              height={50}
+              className="rounded"
+            />
             <span className="text-xl font-bold text-white">Hormozi Advisor</span>
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex gap-2">
+          <div className="hidden md:flex gap-2 items-center">
             <Link
               href="/score"
               className="px-3 py-2 text-sm font-medium text-sky-400 hover:text-sky-300 border border-sky-600/50 rounded-lg hover:border-sky-500 transition-colors"
             >
               My Score
             </Link>
-            <Link
-              href="/calculator"
-              className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white border border-zinc-700 rounded-lg hover:border-zinc-500 transition-colors"
-            >
-              LTV/CAC
-            </Link>
-            <Link
-              href="/value-equation"
-              className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white border border-zinc-700 rounded-lg hover:border-zinc-500 transition-colors"
-            >
-              Value Eq
-            </Link>
-            <Link
-              href="/offer-stack"
-              className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white border border-zinc-700 rounded-lg hover:border-zinc-500 transition-colors"
-            >
-              Offer Stack
-            </Link>
+
+            {/* Tools Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
+                className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white border border-zinc-700 rounded-lg hover:border-zinc-500 transition-colors flex items-center gap-1"
+              >
+                Tools
+                <svg className={`w-4 h-4 transition-transform ${toolsDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {toolsDropdownOpen && (
+                <>
+                  {/* Backdrop to close dropdown */}
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setToolsDropdownOpen(false)}
+                  />
+                  {/* Dropdown menu */}
+                  <div className="absolute right-0 mt-2 w-56 bg-zinc-800 border border-zinc-700 rounded-xl shadow-xl z-20 py-2">
+                    <Link
+                      href="/calculator"
+                      className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                      onClick={() => setToolsDropdownOpen(false)}
+                    >
+                      <span className="text-lg">📊</span>
+                      <div>
+                        <div className="font-medium">LTV/CAC Calculator</div>
+                        <div className="text-xs text-zinc-500">Know your numbers</div>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/value-equation"
+                      className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                      onClick={() => setToolsDropdownOpen(false)}
+                    >
+                      <span className="text-lg">⚖️</span>
+                      <div>
+                        <div className="font-medium">Value Equation</div>
+                        <div className="text-xs text-zinc-500">$100M Offers formula</div>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/offer-stack"
+                      className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                      onClick={() => setToolsDropdownOpen(false)}
+                    >
+                      <span className="text-lg">🎯</span>
+                      <div>
+                        <div className="font-medium">Grand Slam Offers</div>
+                        <div className="text-xs text-zinc-500">Offers so good people feel stupid saying no</div>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/pricing"
+                      className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                      onClick={() => setToolsDropdownOpen(false)}
+                    >
+                      <span className="text-lg">💵</span>
+                      <div>
+                        <div className="font-medium">Pricing Tool</div>
+                        <div className="text-xs text-zinc-500">Strongest profit lever</div>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/bottleneck"
+                      className="flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-700 hover:text-white transition-colors"
+                      onClick={() => setToolsDropdownOpen(false)}
+                    >
+                      <span className="text-lg">🔍</span>
+                      <div>
+                        <div className="font-medium">Bottleneck Finder</div>
+                        <div className="text-xs text-zinc-500">Find your #1 constraint</div>
+                      </div>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+
             <Link
               href="/generator"
               className="px-3 py-2 text-sm font-medium text-zinc-300 hover:text-white border border-zinc-700 rounded-lg hover:border-zinc-500 transition-colors"

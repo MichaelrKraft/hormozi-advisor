@@ -274,6 +274,7 @@ export default function ChatInterface() {
           <button
             onClick={() => setShowConversationList(!showConversationList)}
             className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-zinc-800 border border-zinc-700 rounded-lg hover:bg-zinc-700 transition-colors"
+            title="View and switch between your saved conversations"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -301,6 +302,7 @@ export default function ChatInterface() {
             <button
               onClick={() => setShowIndustrySelector(true)}
               className="px-3 py-1 text-xs font-medium text-sky-400 bg-sky-900/30 border border-sky-600/30 rounded-full hover:bg-sky-900/50 transition-colors"
+              title="Click to change your industry for more relevant advice"
             >
               {industry} ✎
             </button>
@@ -309,6 +311,7 @@ export default function ChatInterface() {
             <button
               onClick={() => setShowIndustrySelector(true)}
               className="px-3 py-1 text-xs font-medium text-zinc-400 bg-zinc-800 border border-zinc-700 rounded-full hover:border-zinc-600 transition-colors"
+              title="Set your industry for personalized business advice"
             >
               + Set Industry
             </button>
@@ -318,6 +321,7 @@ export default function ChatInterface() {
         <button
           onClick={handleNewConversation}
           className="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1"
+          title="Start a new conversation"
         >
           <span>+</span> New Chat
         </button>
@@ -329,7 +333,7 @@ export default function ChatInterface() {
           <div className="flex flex-col items-center justify-center h-full text-center px-4 -mt-20">
             <div className="text-6xl mb-4">💰</div>
             <h2 className="text-2xl font-bold text-white mb-2">
-              Talk to <span className="text-sky-400">Alex Hormozi</span>
+              Talk to <span className="text-sky-400">Alex Hormozi AI</span>
             </h2>
             <p className="text-zinc-400 max-w-md mb-4">
               Get business advice using the frameworks from $100M Offers and $100M Leads.
@@ -352,7 +356,7 @@ export default function ChatInterface() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask about offers, leads, pricing, LTV/CAC, or request a playbook..."
+                  placeholder="Ask about offers, leads, pricing, LTV/CAC, or any other business-related question..."
                   className="flex-1 resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[48px] max-h-[200px]"
                   rows={1}
                   disabled={isLoading}
@@ -426,7 +430,7 @@ export default function ChatInterface() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about offers, leads, pricing, LTV/CAC, or request a playbook..."
+              placeholder="Ask about offers, leads, pricing, LTV/CAC, or any other business-related question..."
               className="flex-1 resize-none rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[48px] max-h-[200px]"
               rows={1}
               disabled={isLoading}
