@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { BaseMetrics, IndustryType } from '@/types/strategies';
 import { industryNames } from '@/lib/calculator/industryDefaults';
+import CACPaybackCalculator from './CACPaybackCalculator';
 
 interface MetricsInputProps {
   onSubmit: (metrics: BaseMetrics, industry: IndustryType) => void;
@@ -194,6 +195,9 @@ export default function MetricsInput({ onSubmit, initialIndustry = 'saas' }: Met
             Use the calculator first →
           </a>
         </p>
+
+        {/* CAC Payback Calculator */}
+        <CACPaybackCalculator />
       </div>
     </div>
   );
