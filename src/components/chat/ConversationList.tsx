@@ -9,6 +9,7 @@ interface ConversationListProps {
   onSelect: (id: string) => void;
   onNew: () => void;
   onDelete: (id: string) => void;
+  onRename?: (id: string, newTitle: string) => void;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -19,10 +20,13 @@ export default function ConversationList({
   onSelect,
   onNew,
   onDelete,
+  onRename,
   isOpen,
   onClose,
 }: ConversationListProps) {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState('');
 
   if (!isOpen) return null;
 
@@ -46,6 +50,26 @@ export default function ConversationList({
     } else {
       setConfirmDelete(id);
     }
+  };
+
+  const handleStartEdit = (id: string, title: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditingId(id);
+    setEditTitle(title);
+    setConfirmDelete(null);
+  };
+
+  const handleSaveEdit = (id: string) => {
+    if (editTitle.trim() && onRename) {
+      onRename(id, editTitle.trim());
+    }
+    setEditingId(null);
+    setEditTitle('');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditTitle('');
   };
 
   return (
@@ -94,9 +118,39 @@ export default function ConversationList({
                       {conv.id === currentId && (
                         <span className="w-2 h-2 bg-sky-400 rounded-full flex-shrink-0" />
                       )}
-                      <h4 className="text-white font-medium truncate text-sm">
-                        {conv.title}
-                      </h4>
+                      {editingId === conv.id ? (
+                        <input
+                          type="text"
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          onClick={(e) => e.stopPropagation()}
+                          onBlur={() => handleSaveEdit(conv.id)}
+                          onKeyDown={(e) => {
+                            e.stopPropagation();
+                            if (e.key === 'Enter') handleSaveEdit(conv.id);
+                            if (e.key === 'Escape') handleCancelEdit();
+                          }}
+                          className="flex-1 text-white font-medium text-sm bg-zinc-700 border border-sky-500 rounded px-2 py-0.5 outline-none"
+                          autoFocus
+                        />
+                      ) : (
+                        <>
+                          <h4 className="text-white font-medium truncate text-sm">
+                            {conv.title}
+                          </h4>
+                          {onRename && (
+                            <button
+                              onClick={(e) => handleStartEdit(conv.id, conv.title, e)}
+                              className="flex-shrink-0 text-zinc-500 hover:text-sky-400 transition-colors p-0.5"
+                              title="Rename conversation"
+                            >
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                              </svg>
+                            </button>
+                          )}
+                        </>
+                      )}
                     </div>
                     <p className="text-zinc-500 text-xs mt-1 truncate">
                       {conv.preview}

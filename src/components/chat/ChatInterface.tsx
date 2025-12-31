@@ -7,6 +7,7 @@ import type { Conversation, ConversationMeta } from '@/types/conversation';
 import MessageBubble from './MessageBubble';
 import QuickActions from './QuickActions';
 import ConversationList from './ConversationList';
+import SuggestedQuestions, { parseFollowUps } from './SuggestedQuestions';
 import {
   getConversationList,
   getConversation,
@@ -15,7 +16,9 @@ import {
   createConversation,
   getOrCreateCurrentConversation,
   migrateOldConversation,
+  updateConversationTitle,
 } from '@/lib/conversations';
+import { exportConversationAsMarkdown } from '@/lib/markdown-export';
 
 const INDUSTRIES = [
   'SaaS / Software',
@@ -42,6 +45,7 @@ export default function ChatInterface() {
   const [streamingContent, setStreamingContent] = useState('');
   const [industry, setIndustry] = useState<string | null>(null);
   const [showIndustrySelector, setShowIndustrySelector] = useState(false);
+  const [followUps, setFollowUps] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -148,6 +152,27 @@ export default function ChatInterface() {
     }
   }, [currentConversation]);
 
+  // Handle renaming a conversation
+  const handleRenameConversation = useCallback((id: string, newTitle: string) => {
+    updateConversationTitle(id, newTitle);
+    setConversationList(getConversationList());
+    // Update current conversation if it's the one being renamed
+    if (currentConversation?.id === id) {
+      setCurrentConversation(prev => prev ? { ...prev, title: newTitle } : null);
+    }
+  }, [currentConversation]);
+
+  // Handle exporting conversation as markdown
+  const handleExportMarkdown = useCallback(() => {
+    if (!currentConversation || messages.length === 0) return;
+    exportConversationAsMarkdown({
+      title: currentConversation.title,
+      messages,
+      industry,
+      createdAt: currentConversation.createdAt,
+    });
+  }, [currentConversation, messages, industry]);
+
   const sendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
@@ -162,6 +187,7 @@ export default function ChatInterface() {
     setInput('');
     setIsLoading(true);
     setStreamingContent('');
+    setFollowUps([]); // Clear previous follow-ups
 
     try {
       // Prepare messages for API (without ids and timestamps)
@@ -196,15 +222,19 @@ export default function ChatInterface() {
         }
       }
 
+      // Parse follow-ups from the response
+      const { cleanContent, followUps: newFollowUps } = parseFollowUps(fullContent);
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: fullContent,
+        content: cleanContent,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
       setStreamingContent('');
+      setFollowUps(newFollowUps);
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage: Message = {
@@ -295,6 +325,7 @@ export default function ChatInterface() {
             onSelect={handleSelectConversation}
             onNew={handleNewConversation}
             onDelete={handleDeleteConversation}
+            onRename={handleRenameConversation}
             isOpen={showConversationList}
             onClose={() => setShowConversationList(false)}
           />
@@ -318,14 +349,29 @@ export default function ChatInterface() {
             </button>
           )}
         </div>
-        {/* New Chat button */}
-        <button
-          onClick={handleNewConversation}
-          className="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1"
-          title="Start a new conversation"
-        >
-          <span>+</span> New Chat
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Export Markdown button */}
+          {messages.length > 0 && (
+            <button
+              onClick={handleExportMarkdown}
+              className="text-xs text-zinc-400 hover:text-sky-300 transition-colors flex items-center gap-1"
+              title="Export conversation as Markdown"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Export
+            </button>
+          )}
+          {/* New Chat button */}
+          <button
+            onClick={handleNewConversation}
+            className="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1"
+            title="Start a new conversation"
+          >
+            <span>+</span> New Chat
+          </button>
+        </div>
       </div>
 
       {/* Messages Area */}
@@ -416,6 +462,16 @@ export default function ChatInterface() {
                     <div className="w-2 h-2 bg-sky-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
+              </div>
+            )}
+            {/* Suggested follow-up questions */}
+            {!isLoading && followUps.length > 0 && (
+              <div className="px-4 mb-4">
+                <SuggestedQuestions
+                  questions={followUps}
+                  onQuestionClick={(question) => sendMessage(question)}
+                  disabled={isLoading}
+                />
               </div>
             )}
             <div ref={messagesEndRef} />

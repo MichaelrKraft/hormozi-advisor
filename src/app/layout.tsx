@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import PlausibleProvider from "next-plausible";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <PlausibleProvider
+          domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN || ""}
+          enabled={!!process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

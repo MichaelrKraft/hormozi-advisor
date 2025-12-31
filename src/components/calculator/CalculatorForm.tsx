@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { CalculatorInputs } from '@/types/calculator';
 import { INDUSTRY_PRESETS, INPUT_TOOLTIPS } from '@/lib/calculator/interpretations';
+import { useAutoSave, useLoadSaved } from '@/hooks/useAutoSave';
 
 interface CalculatorFormProps {
   onCalculate: (inputs: CalculatorInputs) => void;
@@ -19,12 +20,49 @@ const DEFAULT_INPUTS: CalculatorInputs = {
   newCustomersPerMonth: 0,
 };
 
+const STORAGE_KEY = 'hormozi-calculator-form';
+
+// Validation rules for each field
+const VALIDATION_RULES: Record<keyof CalculatorInputs, { min: number; max: number; required: boolean }> = {
+  averageOrderValue: { min: 0, max: 1000000, required: true },
+  purchaseFrequency: { min: 0, max: 365, required: true },
+  customerLifespan: { min: 0, max: 50, required: true },
+  grossMarginPercent: { min: 0, max: 100, required: true },
+  monthlyMarketingSpend: { min: 0, max: 10000000, required: false },
+  monthlySalesCosts: { min: 0, max: 10000000, required: false },
+  newCustomersPerMonth: { min: 0, max: 100000, required: true },
+};
+
 export default function CalculatorForm({ onCalculate, initialInputs }: CalculatorFormProps) {
+  // Load saved form data on mount
+  const savedInputs = useLoadSaved<CalculatorInputs>(STORAGE_KEY, DEFAULT_INPUTS);
+
   const [inputs, setInputs] = useState<CalculatorInputs>({
     ...DEFAULT_INPUTS,
+    ...savedInputs,
     ...initialInputs,
   });
   const [selectedPreset, setSelectedPreset] = useState<string>('Custom');
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [showSaveIndicator, setShowSaveIndicator] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  // Mark as mounted after first render to avoid hydration mismatch
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Stable callback for auto-save indicator
+  const handleAutoSave = useCallback(() => {
+    setShowSaveIndicator(true);
+    setTimeout(() => setShowSaveIndicator(false), 1500);
+  }, []);
+
+  // Auto-save form data
+  useAutoSave(STORAGE_KEY, inputs, {
+    delay: 1000,
+    onSave: handleAutoSave,
+  });
 
   const handlePresetChange = (presetName: string) => {
     setSelectedPreset(presetName);
@@ -46,6 +84,30 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
     setSelectedPreset('Custom');
   };
 
+  const handleBlur = (field: keyof CalculatorInputs) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  };
+
+  // Validate a single field
+  const getFieldError = (field: keyof CalculatorInputs): string | null => {
+    const rules = VALIDATION_RULES[field];
+    const value = inputs[field];
+
+    if (rules.required && (!value || value <= 0)) {
+      return 'This field is required';
+    }
+    if (value < rules.min) {
+      return `Value must be at least ${rules.min}`;
+    }
+    if (value > rules.max) {
+      return `Value must be less than ${rules.max.toLocaleString()}`;
+    }
+    if (field === 'grossMarginPercent' && value > 100) {
+      return 'Percentage cannot exceed 100%';
+    }
+    return null;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onCalculate(inputs);
@@ -58,8 +120,18 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
     inputs.grossMarginPercent > 0 &&
     inputs.newCustomersPerMonth > 0;
 
+  // Button is only enabled after mounting (to avoid hydration mismatch) and when form is valid
+  const canSubmit = hasMounted && isValid;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Auto-save indicator */}
+      {showSaveIndicator && (
+        <div className="fixed top-4 right-4 bg-emerald-600/90 text-white text-sm px-3 py-1.5 rounded-lg shadow-lg animate-pulse z-50">
+          Progress saved
+        </div>
+      )}
+
       {/* Industry Preset Selector */}
       <div>
         <label className="block text-sm font-medium text-zinc-400 mb-2">
@@ -90,32 +162,40 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
             field="averageOrderValue"
             value={inputs.averageOrderValue}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             prefix="$"
             tooltip={INPUT_TOOLTIPS.averageOrderValue}
+            error={touched.averageOrderValue ? getFieldError('averageOrderValue') : null}
           />
           <InputField
             label="Purchase Frequency"
             field="purchaseFrequency"
             value={inputs.purchaseFrequency}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             suffix="per year"
             tooltip={INPUT_TOOLTIPS.purchaseFrequency}
+            error={touched.purchaseFrequency ? getFieldError('purchaseFrequency') : null}
           />
           <InputField
             label="Customer Lifespan"
             field="customerLifespan"
             value={inputs.customerLifespan}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             suffix="years"
             tooltip={INPUT_TOOLTIPS.customerLifespan}
+            error={touched.customerLifespan ? getFieldError('customerLifespan') : null}
           />
           <InputField
             label="Gross Margin"
             field="grossMarginPercent"
             value={inputs.grossMarginPercent}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             suffix="%"
             tooltip={INPUT_TOOLTIPS.grossMarginPercent}
+            error={touched.grossMarginPercent ? getFieldError('grossMarginPercent') : null}
           />
         </div>
       </div>
@@ -132,24 +212,30 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
             field="monthlyMarketingSpend"
             value={inputs.monthlyMarketingSpend}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             prefix="$"
             tooltip={INPUT_TOOLTIPS.monthlyMarketingSpend}
+            error={touched.monthlyMarketingSpend ? getFieldError('monthlyMarketingSpend') : null}
           />
           <InputField
             label="Monthly Sales Costs"
             field="monthlySalesCosts"
             value={inputs.monthlySalesCosts}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             prefix="$"
             tooltip={INPUT_TOOLTIPS.monthlySalesCosts}
+            error={touched.monthlySalesCosts ? getFieldError('monthlySalesCosts') : null}
           />
           <InputField
             label="New Customers per Month"
             field="newCustomersPerMonth"
             value={inputs.newCustomersPerMonth}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             suffix="customers"
             tooltip={INPUT_TOOLTIPS.newCustomersPerMonth}
+            error={touched.newCustomersPerMonth ? getFieldError('newCustomersPerMonth') : null}
           />
         </div>
       </div>
@@ -157,9 +243,9 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
       {/* Submit Button */}
       <button
         type="submit"
-        disabled={!isValid}
+        disabled={!canSubmit}
         className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-colors ${
-          isValid
+          canSubmit
             ? 'bg-sky-600 text-white hover:bg-sky-500 cursor-pointer'
             : 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
         }`}
@@ -167,7 +253,7 @@ export default function CalculatorForm({ onCalculate, initialInputs }: Calculato
         Calculate My Numbers
       </button>
 
-      {!isValid && (
+      {!canSubmit && hasMounted && (
         <p className="text-center text-sm text-zinc-500">
           Fill in all required fields to calculate
         </p>
@@ -181,9 +267,11 @@ interface InputFieldProps {
   field: keyof CalculatorInputs;
   value: number;
   onChange: (field: keyof CalculatorInputs, value: string) => void;
+  onBlur?: (field: keyof CalculatorInputs) => void;
   prefix?: string;
   suffix?: string;
   tooltip?: string;
+  error?: string | null;
 }
 
 function InputField({
@@ -191,9 +279,11 @@ function InputField({
   field,
   value,
   onChange,
+  onBlur,
   prefix,
   suffix,
   tooltip,
+  error,
 }: InputFieldProps) {
   return (
     <div>
@@ -215,12 +305,13 @@ function InputField({
           type="number"
           value={value || ''}
           onChange={(e) => onChange(field, e.target.value)}
+          onBlur={() => onBlur?.(field)}
           placeholder="0"
           step="any"
           min="0"
-          className={`w-full py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-sky-500 focus:outline-none ${
-            prefix ? 'pl-8 pr-4' : 'px-4'
-          } ${suffix ? 'pr-20' : ''}`}
+          className={`w-full py-3 bg-zinc-800 border rounded-lg text-white focus:border-sky-500 focus:outline-none ${
+            error ? 'border-red-500' : 'border-zinc-700'
+          } ${prefix ? 'pl-8 pr-4' : 'px-4'} ${suffix ? 'pr-20' : ''}`}
         />
         {suffix && (
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">
@@ -228,6 +319,9 @@ function InputField({
           </span>
         )}
       </div>
+      {error && (
+        <p className="mt-1 text-xs text-red-400">{error}</p>
+      )}
     </div>
   );
 }

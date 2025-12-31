@@ -8,11 +8,13 @@ import OverallScore from '@/components/score/OverallScore';
 import ScoreCard, { ScoreDetail } from '@/components/score/ScoreCard';
 import Recommendations from '@/components/score/Recommendations';
 import MobileHeader from '@/components/layout/MobileHeader';
+import { INDUSTRY_BENCHMARKS, compareToBenchmark, INDUSTRY_LIST, type Industry } from '@/lib/benchmarks/data';
 
 export default function ScorePage() {
   const [score, setScore] = useState<HormoziScore | null>(null);
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedIndustry, setSelectedIndustry] = useState<Industry>('general');
 
   useEffect(() => {
     // Calculate score on mount
@@ -20,7 +22,19 @@ export default function ScorePage() {
     setScore(calculated);
     setRecommendations(getRecommendations(calculated));
     setIsLoading(false);
+
+    // Load saved industry preference
+    const savedIndustry = localStorage.getItem('hormozi-benchmark-industry');
+    if (savedIndustry && INDUSTRY_BENCHMARKS[savedIndustry as Industry]) {
+      setSelectedIndustry(savedIndustry as Industry);
+    }
   }, []);
+
+  // Save industry preference when changed
+  const handleIndustryChange = (industry: Industry) => {
+    setSelectedIndustry(industry);
+    localStorage.setItem('hormozi-benchmark-industry', industry);
+  };
 
   if (isLoading || !score) {
     return (
@@ -53,6 +67,99 @@ export default function ScorePage() {
             totalTools={score.totalTools}
           />
         </div>
+
+        {/* Benchmark Comparison */}
+        {score.ltvCac.status === 'complete' && (
+          <div className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-6 mb-12">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <h2 className="text-xl font-bold text-white">Industry Benchmark</h2>
+              <select
+                value={selectedIndustry}
+                onChange={(e) => handleIndustryChange(e.target.value as Industry)}
+                className="px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white text-sm focus:border-sky-500 focus:outline-none"
+              >
+                {INDUSTRY_LIST.map((ind) => (
+                  <option key={ind.id} value={ind.id}>
+                    {ind.icon} {ind.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {(() => {
+              const benchmark = INDUSTRY_BENCHMARKS[selectedIndustry];
+              const ltvCacData = score.ltvCac as LTVCACScore;
+              const ltvCacComparison = compareToBenchmark(
+                ltvCacData.ratio || 0,
+                benchmark.ltvCac,
+                true
+              );
+              const paybackComparison = compareToBenchmark(
+                ltvCacData.paybackMonths || 0,
+                benchmark.paybackMonths,
+                false
+              );
+
+              return (
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {/* LTV:CAC Comparison */}
+                  <div className="bg-zinc-900/50 rounded-lg p-4">
+                    <div className="text-sm text-zinc-400 mb-1">Your LTV:CAC Ratio</div>
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <span className="text-2xl font-bold text-white">
+                        {ltvCacData.ratio?.toFixed(1)}:1
+                      </span>
+                      <span className={`text-sm font-medium ${ltvCacComparison.color}`}>
+                        {ltvCacComparison.label}
+                      </span>
+                    </div>
+                    <div className="text-sm text-zinc-500">
+                      vs {benchmark.name} median: <span className="text-zinc-400">{benchmark.ltvCac.median}:1</span>
+                    </div>
+                    <div className="mt-2 text-xs text-zinc-500">
+                      {ltvCacComparison.percentile >= 75 ? (
+                        <span className="text-emerald-400">
+                          Top {100 - ltvCacComparison.percentile}% in your industry
+                        </span>
+                      ) : (
+                        <span>
+                          ~{ltvCacComparison.percentile}th percentile
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Payback Period Comparison */}
+                  <div className="bg-zinc-900/50 rounded-lg p-4">
+                    <div className="text-sm text-zinc-400 mb-1">CAC Payback Period</div>
+                    <div className="flex items-baseline gap-2 mb-3">
+                      <span className="text-2xl font-bold text-white">
+                        {ltvCacData.paybackMonths?.toFixed(1)} months
+                      </span>
+                      <span className={`text-sm font-medium ${paybackComparison.color}`}>
+                        {paybackComparison.label}
+                      </span>
+                    </div>
+                    <div className="text-sm text-zinc-500">
+                      vs {benchmark.name} median: <span className="text-zinc-400">{benchmark.paybackMonths.median} months</span>
+                    </div>
+                    <div className="mt-2 text-xs text-zinc-500">
+                      {paybackComparison.percentile >= 75 ? (
+                        <span className="text-emerald-400">
+                          Top {100 - paybackComparison.percentile}% in your industry
+                        </span>
+                      ) : (
+                        <span>
+                          ~{paybackComparison.percentile}th percentile
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        )}
 
         {/* Recommendations */}
         <div className="mb-12">
