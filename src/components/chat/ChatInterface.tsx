@@ -35,6 +35,25 @@ const INDUSTRIES = [
   'Other',
 ];
 
+interface WebsiteContext {
+  businessName?: string;
+  industry?: string;
+  tagline?: string;
+  products?: Array<string | { name?: string; description?: string; keyFeatures?: string[] }>;
+  targetAudience?: string;
+  uniqueValue?: string;
+  pricing?: string | { model?: string; tiers?: string; prices?: string };
+  businessModel?: string;
+  summary?: string;
+  howItWorks?: string;
+  keyBenefits?: string[];
+  socialProof?: string;
+  currentOffer?: string;
+  potentialWeaknesses?: string;
+  competitivePosition?: string;
+  additionalContext?: string;
+}
+
 export default function ChatInterface() {
   const [currentConversation, setCurrentConversation] = useState<Conversation | null>(null);
   const [conversationList, setConversationList] = useState<ConversationMeta[]>([]);
@@ -46,6 +65,16 @@ export default function ChatInterface() {
   const [industry, setIndustry] = useState<string | null>(null);
   const [showIndustrySelector, setShowIndustrySelector] = useState(false);
   const [followUps, setFollowUps] = useState<string[]>([]);
+  const [websiteContext, setWebsiteContext] = useState<WebsiteContext | null>(null);
+  const [showWebsiteModal, setShowWebsiteModal] = useState(false);
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [additionalContext, setAdditionalContext] = useState('');
+  const [isCrawling, setIsCrawling] = useState(false);
+  const [crawlError, setCrawlError] = useState<string | null>(null);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false);
+  const [showUnsavedWarning, setShowUnsavedWarning] = useState(false);
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -64,35 +93,31 @@ export default function ChatInterface() {
     setConversationList(getConversationList());
   }, []);
 
-  // Auto-save conversation when messages change
+  // Track unsaved changes when messages change (but don't auto-save)
   useEffect(() => {
-    if (currentConversation && messages.length > 0) {
-      const updatedConv: Conversation = {
-        ...currentConversation,
-        messages,
-        industry,
-        updatedAt: Date.now(),
-      };
-      saveConversation(updatedConv);
-      // Update list to reflect new title/preview
-      setConversationList(getConversationList());
+    if (messages.length > 0) {
+      // Check if this is a new message (not loaded from storage)
+      const savedConv = currentConversation?.id ? getConversation(currentConversation.id) : null;
+      if (!savedConv || savedConv.messages.length !== messages.length) {
+        setHasUnsavedChanges(true);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
-  // Save industry changes separately
+  // Warn user before closing if there are unsaved changes
   useEffect(() => {
-    if (currentConversation && industry !== currentConversation.industry) {
-      const updatedConv: Conversation = {
-        ...currentConversation,
-        industry,
-        updatedAt: Date.now(),
-      };
-      saveConversation(updatedConv);
-      setCurrentConversation(updatedConv);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [industry]);
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges && messages.length > 0) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved conversation changes. Are you sure you want to leave?';
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges, messages.length]);
 
   // Scroll to bottom when messages or streaming content change
   useEffect(() => {
@@ -109,22 +134,43 @@ export default function ChatInterface() {
 
   // Handle selecting a conversation from the list
   const handleSelectConversation = useCallback((id: string) => {
-    const conv = getConversation(id);
-    if (conv) {
-      setCurrentConversation(conv);
-      setMessages(conv.messages);
-      setIndustry(conv.industry);
+    const doSelectConversation = () => {
+      const conv = getConversation(id);
+      if (conv) {
+        setCurrentConversation(conv);
+        setMessages(conv.messages);
+        setIndustry(conv.industry);
+        setHasUnsavedChanges(false);
+      }
+    };
+
+    // Check for unsaved changes first
+    if (hasUnsavedChanges && messages.length > 0) {
+      setPendingAction(() => doSelectConversation);
+      setShowUnsavedWarning(true);
+    } else {
+      doSelectConversation();
     }
-  }, []);
+  }, [hasUnsavedChanges, messages.length]);
 
   // Handle creating a new conversation
   const handleNewConversation = useCallback(() => {
-    const conv = createConversation(industry);
-    saveConversation(conv);
-    setCurrentConversation(conv);
-    setMessages([]);
-    setConversationList(getConversationList());
-  }, [industry]);
+    const doNewConversation = () => {
+      const conv = createConversation(industry);
+      // Don't save empty conversations automatically
+      setCurrentConversation(conv);
+      setMessages([]);
+      setHasUnsavedChanges(false);
+    };
+
+    // Check for unsaved changes first
+    if (hasUnsavedChanges && messages.length > 0) {
+      setPendingAction(() => doNewConversation);
+      setShowUnsavedWarning(true);
+    } else {
+      doNewConversation();
+    }
+  }, [industry, hasUnsavedChanges, messages.length]);
 
   // Handle deleting a conversation
   const handleDeleteConversation = useCallback((id: string) => {
@@ -173,6 +219,35 @@ export default function ChatInterface() {
     });
   }, [currentConversation, messages, industry]);
 
+  // Handle saving the conversation explicitly
+  const handleSaveConversation = useCallback(() => {
+    if (!currentConversation || messages.length === 0) return;
+
+    const updatedConv: Conversation = {
+      ...currentConversation,
+      messages,
+      industry,
+      updatedAt: Date.now(),
+    };
+    saveConversation(updatedConv);
+    setCurrentConversation(updatedConv);
+    setConversationList(getConversationList());
+    setHasUnsavedChanges(false);
+    setShowSaveConfirm(true);
+
+    // Hide confirmation after 2 seconds
+    setTimeout(() => setShowSaveConfirm(false), 2000);
+  }, [currentConversation, messages, industry]);
+
+  // Handle discarding conversation (start fresh without saving)
+  const handleDiscardConversation = useCallback(() => {
+    const conv = createConversation(industry);
+    // Don't save to storage - just update state
+    setCurrentConversation(conv);
+    setMessages([]);
+    setHasUnsavedChanges(false);
+  }, [industry]);
+
   const sendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
@@ -199,7 +274,11 @@ export default function ChatInterface() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: apiMessages, industry }),
+        body: JSON.stringify({
+          messages: apiMessages,
+          industry,
+          websiteContext: websiteContext || undefined,
+        }),
       });
 
       if (!response.ok) {
@@ -267,8 +346,191 @@ export default function ChatInterface() {
     setShowIndustrySelector(false);
   };
 
+  // Handle website crawling
+  const handleCrawlWebsite = async () => {
+    if (!websiteUrl.trim()) return;
+
+    setIsCrawling(true);
+    setCrawlError(null);
+
+    try {
+      const response = await fetch('/api/crawl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: websiteUrl }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to analyze website');
+      }
+
+      // Include additional context if provided
+      const contextWithAdditional = {
+        ...data.businessInfo,
+        additionalContext: additionalContext.trim() || undefined,
+      };
+      setWebsiteContext(contextWithAdditional);
+      setShowWebsiteModal(false);
+
+      // Auto-set industry if detected
+      if (data.businessInfo?.industry && !industry) {
+        setIndustry(data.businessInfo.industry);
+      }
+    } catch (error) {
+      setCrawlError(error instanceof Error ? error.message : 'Failed to analyze website');
+    } finally {
+      setIsCrawling(false);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full bg-zinc-900">
+      {/* Website Analyzer Modal */}
+      {showWebsiteModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-6 max-w-lg w-full shadow-xl my-8">
+            <h3 className="text-xl font-bold text-white mb-2">Analyze Your Business</h3>
+            <p className="text-zinc-400 text-sm mb-4">
+              I&apos;ll crawl your website to understand your business. Add extra context below for even better advice.
+            </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-1">Website URL</label>
+                <input
+                  type="url"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  placeholder="https://yourbusiness.com"
+                  className="w-full px-4 py-3 text-sm text-white bg-zinc-700 border border-zinc-600 rounded-lg focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 placeholder-zinc-500"
+                  disabled={isCrawling}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-1">
+                  Additional Context <span className="text-zinc-500">(optional)</span>
+                </label>
+                <textarea
+                  value={additionalContext}
+                  onChange={(e) => setAdditionalContext(e.target.value)}
+                  placeholder="Add info that's NOT on your website:
+• How your product actually works (user flow)
+• Current metrics (MRR, users, conversion rates)
+• Biggest challenges you're facing
+• What you've already tried
+• Your goals and timeline"
+                  className="w-full px-4 py-3 text-sm text-white bg-zinc-700 border border-zinc-600 rounded-lg focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 placeholder-zinc-500 min-h-[120px] resize-y"
+                  disabled={isCrawling}
+                />
+                <p className="text-xs text-zinc-500 mt-1">
+                  The more context you provide, the more specific my advice will be.
+                </p>
+              </div>
+
+              {crawlError && (
+                <p className="text-red-400 text-sm">{crawlError}</p>
+              )}
+
+              <button
+                onClick={handleCrawlWebsite}
+                disabled={!websiteUrl.trim() || isCrawling}
+                className="w-full px-4 py-3 text-sm font-medium text-white bg-sky-600 rounded-lg hover:bg-sky-500 disabled:bg-zinc-700 disabled:text-zinc-500 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+              >
+                {isCrawling ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Analyzing (this may take 10-20 seconds)...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                    </svg>
+                    Analyze My Business
+                  </>
+                )}
+              </button>
+            </div>
+            <button
+              onClick={() => {
+                setShowWebsiteModal(false);
+                setCrawlError(null);
+              }}
+              className="mt-4 w-full text-sm text-zinc-500 hover:text-zinc-300"
+              disabled={isCrawling}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Unsaved Changes Warning Modal */}
+      {showUnsavedWarning && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-6 max-w-md w-full mx-4 shadow-xl">
+            <h3 className="text-xl font-bold text-white mb-2">Unsaved Changes</h3>
+            <p className="text-zinc-400 text-sm mb-6">
+              You have an unsaved conversation. Would you like to save it before continuing?
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  handleSaveConversation();
+                  setShowUnsavedWarning(false);
+                  if (pendingAction) {
+                    pendingAction();
+                    setPendingAction(null);
+                  }
+                }}
+                className="w-full px-4 py-3 text-sm font-medium text-white bg-sky-600 rounded-lg hover:bg-sky-500 transition-colors"
+              >
+                Save & Continue
+              </button>
+              <button
+                onClick={() => {
+                  setShowUnsavedWarning(false);
+                  setHasUnsavedChanges(false);
+                  if (pendingAction) {
+                    pendingAction();
+                    setPendingAction(null);
+                  }
+                }}
+                className="w-full px-4 py-3 text-sm font-medium text-red-400 bg-red-900/30 border border-red-600/30 rounded-lg hover:bg-red-900/50 transition-colors"
+              >
+                Discard & Continue
+              </button>
+              <button
+                onClick={() => {
+                  setShowUnsavedWarning(false);
+                  setPendingAction(null);
+                }}
+                className="w-full px-4 py-3 text-sm font-medium text-zinc-400 bg-zinc-700 rounded-lg hover:bg-zinc-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Save Confirmation Toast */}
+      {showSaveConfirm && (
+        <div className="fixed top-4 right-4 z-50 animate-in slide-in-from-top-2 fade-in duration-300">
+          <div className="bg-emerald-900/90 border border-emerald-600/50 text-emerald-300 px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Conversation saved!
+          </div>
+        </div>
+      )}
+
       {/* Industry Selector Modal */}
       {showIndustrySelector && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
@@ -348,8 +610,45 @@ export default function ChatInterface() {
               + Set Industry
             </button>
           )}
+          {/* Website Context Indicator/Button */}
+          {websiteContext ? (
+            <button
+              onClick={() => setShowWebsiteModal(true)}
+              className="px-3 py-1 text-xs font-medium text-emerald-400 bg-emerald-900/30 border border-emerald-600/30 rounded-full hover:bg-emerald-900/50 transition-colors flex items-center gap-1"
+              title={`Analyzing: ${websiteContext.businessName || 'Your Business'} - Click to change`}
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              {websiteContext.businessName || 'Site Analyzed'} ✎
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowWebsiteModal(true)}
+              className="px-3 py-1 text-xs font-medium text-zinc-400 bg-zinc-800 border border-zinc-700 rounded-full hover:border-zinc-600 transition-colors flex items-center gap-1"
+              title="Analyze your website for personalized business advice"
+            >
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              + My Website
+            </button>
+          )}
         </div>
         <div className="flex items-center gap-3">
+          {/* Save button - only shows when there are unsaved changes */}
+          {hasUnsavedChanges && messages.length > 0 && (
+            <button
+              onClick={handleSaveConversation}
+              className="px-3 py-1.5 text-xs font-medium text-emerald-400 bg-emerald-900/30 border border-emerald-600/50 rounded-lg hover:bg-emerald-900/50 transition-colors flex items-center gap-1.5"
+              title="Save this conversation"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
+              Save
+            </button>
+          )}
           {/* Export Markdown button */}
           {messages.length > 0 && (
             <button
@@ -394,14 +693,27 @@ export default function ChatInterface() {
               Get business advice using the frameworks from $100M Offers and $100M Leads.
               Ask about offers, pricing, leads, LTV/CAC, or anything business.
             </p>
-            {!industry && (
-              <button
-                onClick={() => setShowIndustrySelector(true)}
-                className="mb-4 px-4 py-2 text-sm font-medium text-sky-400 border border-sky-600/50 rounded-lg hover:bg-sky-900/30 transition-colors"
-              >
-                Select Your Industry for Personalized Advice
-              </button>
-            )}
+            <div className="flex flex-col sm:flex-row items-center gap-3 mb-4">
+              {!websiteContext && (
+                <button
+                  onClick={() => setShowWebsiteModal(true)}
+                  className="px-4 py-2 text-sm font-medium text-emerald-400 border border-emerald-600/50 rounded-lg hover:bg-emerald-900/30 transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  </svg>
+                  Analyze My Website
+                </button>
+              )}
+              {!industry && (
+                <button
+                  onClick={() => setShowIndustrySelector(true)}
+                  className="px-4 py-2 text-sm font-medium text-sky-400 border border-sky-600/50 rounded-lg hover:bg-sky-900/30 transition-colors"
+                >
+                  Select Your Industry
+                </button>
+              )}
+            </div>
             <QuickActions onSelect={sendMessage} disabled={isLoading} />
             {/* Input Area - Centered in welcome state */}
             <div className="w-full max-w-2xl mt-6">
