@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import BlurText from '@/components/ui/BlurText';
 import ShinyText from '@/components/ui/ShinyText';
+
+type AdviceMode = 'business' | 'life';
 
 // FAQ Data
 const FAQ_ITEMS = [
@@ -52,6 +54,16 @@ const PAIN_POINTS = [
   { icon: '🤷', text: "Don't know which lever to pull next" }
 ];
 
+// Life Pain Points Data
+const LIFE_PAIN_POINTS = [
+  { icon: '😴', text: "Stuck in a rut and can't break free" },
+  { icon: '⏰', text: "Procrastinating on what matters most" },
+  { icon: '🎭', text: "Living someone else's version of success" },
+  { icon: '😤', text: "Toxic relationships draining your energy" },
+  { icon: '😨', text: "Fear holding you back from taking risks" },
+  { icon: '🔄', text: "Same patterns, same results, different year" }
+];
+
 // How It Works Steps
 const STEPS = [
   {
@@ -82,22 +94,65 @@ const TOOLS = [
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+  const [adviceMode, setAdviceMode] = useState<AdviceMode>('business');
+
+  // Persist mode to localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('adviceMode') as AdviceMode;
+    if (saved) setAdviceMode(saved);
+  }, []);
+
+  const toggleMode = () => {
+    const newMode = adviceMode === 'business' ? 'life' : 'business';
+    setAdviceMode(newMode);
+    localStorage.setItem('adviceMode', newMode);
+  };
+
+  const isLifeMode = adviceMode === 'life';
 
   return (
     <main className="min-h-screen bg-zinc-900">
       {/* Header */}
       <header className="border-b border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/hormozi-logo.png"
-              alt="Hormozi Advisor Logo"
-              width={50}
-              height={50}
-              className="rounded"
-            />
-            <span className="text-xl font-bold text-white">Hormozi Advisor</span>
-          </Link>
+          <div className="flex items-center gap-4">
+            {/* Mode Toggle */}
+            <button
+              onClick={toggleMode}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-sky-400 hover:text-sky-300 border border-sky-600/50 rounded-lg hover:border-sky-500 transition-colors"
+            >
+              {/* Briefcase Icon */}
+              <svg
+                className={`w-4 h-4 transition-opacity ${isLifeMode ? 'opacity-40' : 'opacity-100'}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span className="opacity-50">/</span>
+              {/* Brain/Mind Icon */}
+              <svg
+                className={`w-4 h-4 transition-opacity ${isLifeMode ? 'opacity-100' : 'opacity-40'}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </button>
+
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/hormozi-logo.png"
+                alt="Hormozi Advisor Logo"
+                width={50}
+                height={50}
+                className="rounded"
+              />
+              <span className="text-xl font-bold text-white">Hormozi Advisor</span>
+            </Link>
+          </div>
           <div className="hidden md:flex gap-2 items-center">
             <Link
               href="/score"
@@ -165,38 +220,78 @@ export default function LandingPage() {
       <section className="py-16 md:py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
-            <BlurText
-              text="Business Advice from"
-              delay={0.12}
-              animateBy="words"
-              direction="top"
-              className="text-white"
-            />{' '}
-            <ShinyText
-              text="Alex Hormozi"
-              speed={3}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold"
-            />
+            {isLifeMode ? (
+              <>
+                <BlurText
+                  text="Life Advice from"
+                  delay={0.12}
+                  animateBy="words"
+                  direction="top"
+                  className="text-white"
+                />{' '}
+                <ShinyText
+                  text="Alex Hormozi"
+                  speed={3}
+                  className="text-4xl sm:text-5xl md:text-6xl font-bold"
+                />
+              </>
+            ) : (
+              <>
+                <BlurText
+                  text="Business Advice from"
+                  delay={0.12}
+                  animateBy="words"
+                  direction="top"
+                  className="text-white"
+                />{' '}
+                <ShinyText
+                  text="Alex Hormozi"
+                  speed={3}
+                  className="text-4xl sm:text-5xl md:text-6xl font-bold"
+                />
+              </>
+            )}
           </h1>
           <p className="text-xl md:text-2xl text-zinc-400 mb-8 max-w-3xl mx-auto">
-            Get direct, no-BS guidance using the frameworks from{' '}
-            <span className="text-sky-400">$100M Offers</span> and{' '}
-            <span className="text-sky-400">$100M Leads</span>.
-            Find your bottleneck. Fix your offer. Scale your business.
+            {isLifeMode ? (
+              <>
+                137 Brutally Honest Truths to help you win at anything.{' '}
+                <span className="bg-gradient-to-r from-purple-400 to-violet-500 bg-clip-text text-transparent font-semibold">No excuses. No BS.</span>{' '}
+                Take ownership. Transform your life.
+              </>
+            ) : (
+              <>
+                Get direct, no-BS guidance using the frameworks from{' '}
+                <span className="text-sky-400">$100M Offers</span> and{' '}
+                <span className="text-sky-400">$100M Leads</span>.
+                Find your bottleneck. Fix your offer. Scale your business.
+              </>
+            )}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link
-              href="/chat"
-              className="px-8 py-4 text-lg font-semibold bg-sky-600 text-white rounded-xl hover:bg-sky-500 transition-all hover:scale-105 shadow-lg shadow-sky-600/25"
-            >
-              Chat with Hormozi AI
-            </Link>
-            <Link
-              href="/bottleneck"
-              className="px-8 py-4 text-lg font-semibold text-sky-400 border-2 border-sky-600 rounded-xl hover:bg-sky-900/30 transition-colors"
-            >
-              Find Your Bottleneck
-            </Link>
+            {isLifeMode ? (
+              <Link
+                href="/life-chat"
+                className="px-8 py-4 text-lg font-semibold bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl hover:from-purple-400 hover:to-violet-500 transition-all hover:scale-105 shadow-lg shadow-purple-600/25"
+              >
+                Chat with Life Coach
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/chat"
+                  className="px-8 py-4 text-lg font-semibold bg-sky-600 text-white rounded-xl hover:bg-sky-500 transition-all hover:scale-105 shadow-lg shadow-sky-600/25"
+                >
+                  Chat with Hormozi AI
+                </Link>
+                <Link
+                  href="/bottleneck"
+                  className="px-8 py-4 text-lg font-semibold text-sky-400 border-2 border-sky-600 rounded-xl hover:bg-sky-900/30 transition-colors"
+                >
+                  Find Your Bottleneck
+                </Link>
+              </>
+            )}
           </div>
           <p className="text-zinc-500 text-sm">No credit card required. Start in 30 seconds.</p>
         </div>
@@ -205,18 +300,37 @@ export default function LandingPage() {
       {/* Social Proof Bar */}
       <section className="py-6 px-4 border-y border-zinc-800 bg-zinc-800/30">
         <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-8 text-center">
-          <div>
-            <div className="text-2xl font-bold text-white">1,260+</div>
-            <div className="text-zinc-500 text-sm">Businesses Analyzed</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-white">6</div>
-            <div className="text-zinc-500 text-sm">Proven Frameworks</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-white">$100M+</div>
-            <div className="text-zinc-500 text-sm">In Applied Methodology</div>
-          </div>
+          {isLifeMode ? (
+            <>
+              <div>
+                <div className="text-2xl font-bold text-white">137</div>
+                <div className="text-zinc-500 text-sm">Brutally Honest Truths</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white">10</div>
+                <div className="text-zinc-500 text-sm">Life Frameworks</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white">6hrs</div>
+                <div className="text-zinc-500 text-sm">Of Wisdom Distilled</div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <div className="text-2xl font-bold text-white">1,260+</div>
+                <div className="text-zinc-500 text-sm">Businesses Analyzed</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white">6</div>
+                <div className="text-zinc-500 text-sm">Proven Frameworks</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white">$100M+</div>
+                <div className="text-zinc-500 text-sm">In Applied Methodology</div>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -224,16 +338,20 @@ export default function LandingPage() {
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Are You Stuck In Your Business?
+            {isLifeMode ? "Are You Stuck In Your Life?" : "Are You Stuck In Your Business?"}
           </h2>
           <p className="text-zinc-400 text-lg mb-12 max-w-2xl mx-auto">
-            Most entrepreneurs hit the same walls. Sound familiar?
+            {isLifeMode
+              ? "Most people hit the same walls year after year. Sound familiar?"
+              : "Most entrepreneurs hit the same walls. Sound familiar?"}
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {PAIN_POINTS.map((point, index) => (
+            {(isLifeMode ? LIFE_PAIN_POINTS : PAIN_POINTS).map((point, index) => (
               <div
                 key={index}
-                className="bg-zinc-800/50 border border-zinc-700 rounded-xl p-6 text-left hover:border-red-500/50 transition-colors"
+                className={`bg-zinc-800/50 border border-zinc-700 rounded-xl p-6 text-left transition-colors ${
+                  isLifeMode ? 'hover:border-purple-500/50' : 'hover:border-red-500/50'
+                }`}
               >
                 <span className="text-2xl mb-3 block">{point.icon}</span>
                 <p className="text-zinc-300">{point.text}</p>
@@ -247,56 +365,99 @@ export default function LandingPage() {
       <section className="py-20 px-4 bg-gradient-to-b from-zinc-800/50 to-zinc-900">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            What If You Had Alex Hormozi In Your Pocket?
+            {isLifeMode
+              ? "What If You Had a Life Coach In Your Pocket?"
+              : "What If You Had Alex Hormozi In Your Pocket?"}
           </h2>
           <p className="text-zinc-400 text-lg mb-8 max-w-2xl mx-auto">
-            Hormozi Advisor gives you instant access to the exact frameworks that built
-            multiple $100M+ companies. No guessing. No generic advice. Just proven systems
-            and advice in Alex's tone applied to YOUR business.
+            {isLifeMode
+              ? "Get brutally honest advice from Alex's 137 life truths. No coddling. No excuses. Just the hard truths that transform lives."
+              : "Hormozi Advisor gives you instant access to the exact frameworks that built multiple $100M+ companies. No guessing. No generic advice. Just proven systems and advice in Alex's tone applied to YOUR business."}
           </p>
-          <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-8 max-w-2xl mx-auto mb-6">
-            <div className="flex items-start gap-4 text-left">
-              <div className="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold">H</span>
-              </div>
-              <div>
-                <p className="text-zinc-300 mb-4">
-                  "Your LTV/CAC ratio is 2.1x - you're leaving money on the table. Here's the issue:
-                  your average customer only buys once. Let me show you 3 ways to increase purchase
-                  frequency using the Value Ladder framework..."
-                </p>
-                <p className="text-zinc-500 text-sm">- Hormozi Advisor analyzing a real business</p>
-              </div>
-            </div>
-          </div>
 
-          {/* Second Hormozi Quote */}
-          <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-8 max-w-2xl mx-auto">
-            <div className="flex items-start gap-4 text-left">
-              <div className="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold">H</span>
+          {isLifeMode ? (
+            <>
+              <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-8 max-w-2xl mx-auto mb-6">
+                <div className="flex items-start gap-4 text-left">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">H</span>
+                  </div>
+                  <div>
+                    <p className="text-zinc-300 mb-4">
+                      "If you're not where you want to be, it's your fault. Not because that's fair -
+                      but because that gives you POWER. When you blame others, you give them the power to fix it.
+                      Take it back."
+                    </p>
+                    <p className="text-zinc-500 text-sm">- The Ownership Framework</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-zinc-300 mb-4">
-                  "If you can't get 10 people to pay $48 for something that claims to solve a $5K problem,
-                  the market is telling you one of three things:"
-                </p>
-                <ol className="text-zinc-300 mb-4 space-y-2 list-decimal list-inside">
-                  <li><span className="font-semibold text-white">The problem isn't big enough</span> - People don't actually hate it as much as you think</li>
-                  <li><span className="font-semibold text-white">Your solution isn't valuable enough</span> - The market is commoditized</li>
-                  <li><span className="font-semibold text-white">Your positioning sucks</span> - You're not communicating the value clearly</li>
-                </ol>
-                <p className="text-sky-400 font-medium">
-                  But here's the thing: Finding out fast is GOOD news, not bad news.
-                </p>
-                <p className="text-zinc-500 text-sm mt-3">- Hormozi Advisor Authentic Advice</p>
+
+              <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-8 max-w-2xl mx-auto">
+                <div className="flex items-start gap-4 text-left">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">H</span>
+                  </div>
+                  <div>
+                    <p className="text-zinc-300 mb-4">
+                      "Your friends either increase or decrease the likelihood of your goals. There's no neutral.
+                      If they're not helping you grow, they're holding you back."
+                    </p>
+                    <p className="text-purple-400 font-medium">
+                      Audit your relationships ruthlessly. Your future self will thank you.
+                    </p>
+                    <p className="text-zinc-500 text-sm mt-3">- The Relationship Framework</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+              <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-8 max-w-2xl mx-auto mb-6">
+                <div className="flex items-start gap-4 text-left">
+                  <div className="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">H</span>
+                  </div>
+                  <div>
+                    <p className="text-zinc-300 mb-4">
+                      "Your LTV/CAC ratio is 2.1x - you're leaving money on the table. Here's the issue:
+                      your average customer only buys once. Let me show you 3 ways to increase purchase
+                      frequency using the Value Ladder framework..."
+                    </p>
+                    <p className="text-zinc-500 text-sm">- Hormozi Advisor analyzing a real business</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-8 max-w-2xl mx-auto">
+                <div className="flex items-start gap-4 text-left">
+                  <div className="w-10 h-10 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-white font-bold">H</span>
+                  </div>
+                  <div>
+                    <p className="text-zinc-300 mb-4">
+                      "If you can't get 10 people to pay $48 for something that claims to solve a $5K problem,
+                      the market is telling you one of three things:"
+                    </p>
+                    <ol className="text-zinc-300 mb-4 space-y-2 list-decimal list-inside">
+                      <li><span className="font-semibold text-white">The problem isn't big enough</span> - People don't actually hate it as much as you think</li>
+                      <li><span className="font-semibold text-white">Your solution isn't valuable enough</span> - The market is commoditized</li>
+                      <li><span className="font-semibold text-white">Your positioning sucks</span> - You're not communicating the value clearly</li>
+                    </ol>
+                    <p className="text-sky-400 font-medium">
+                      But here's the thing: Finding out fast is GOOD news, not bad news.
+                    </p>
+                    <p className="text-zinc-500 text-sm mt-3">- Hormozi Advisor Authentic Advice</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* Features Grid - Only show for business mode */}
+      {!isLifeMode && (
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
@@ -329,8 +490,10 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* How It Works */}
+      {/* How It Works - Only show for business mode */}
+      {!isLifeMode && (
       <section className="py-20 px-4 bg-zinc-800/30">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
@@ -371,8 +534,10 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* Testimonials */}
+      {/* Testimonials - Only show for business mode */}
+      {!isLifeMode && (
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
@@ -428,8 +593,10 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* FAQ Section */}
+      {/* FAQ Section - Only show for business mode */}
+      {!isLifeMode && (
       <section className="py-20 px-4 bg-zinc-800/30">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
@@ -463,8 +630,10 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* Pricing Section */}
+      {/* Pricing Section - Only show for business mode */}
+      {!isLifeMode && (
       <section className="py-20 px-4 bg-gradient-to-b from-zinc-800/50 to-zinc-900">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">
@@ -575,24 +744,46 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Final CTA */}
       <section className="py-24 px-4 bg-gradient-to-b from-zinc-900 to-zinc-800">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Transform Your Business?
-          </h2>
-          <p className="text-zinc-400 text-lg mb-8 max-w-xl mx-auto">
-            Stop guessing. Start executing with proven frameworks that have generated
-            over $100M in value.
-          </p>
-          <Link
-            href="/chat"
-            className="inline-block px-10 py-5 text-xl font-semibold bg-sky-600 text-white rounded-xl hover:bg-sky-500 transition-all hover:scale-105 shadow-lg shadow-sky-600/25"
-          >
-            Get Started Free
-          </Link>
-          <p className="text-zinc-500 text-sm mt-4">No credit card required</p>
+          {isLifeMode ? (
+            <>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Transform Your Life?
+              </h2>
+              <p className="text-zinc-400 text-lg mb-8 max-w-xl mx-auto">
+                Stop making excuses. Start taking ownership. 137 brutally honest truths
+                are waiting for you.
+              </p>
+              <Link
+                href="/life-chat"
+                className="inline-block px-10 py-5 text-xl font-semibold bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl hover:from-purple-400 hover:to-violet-500 transition-all hover:scale-105 shadow-lg shadow-purple-600/25"
+              >
+                Start Your Transformation
+              </Link>
+              <p className="text-zinc-500 text-sm mt-4">No BS. No excuses. Just truth.</p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Ready to Transform Your Business?
+              </h2>
+              <p className="text-zinc-400 text-lg mb-8 max-w-xl mx-auto">
+                Stop guessing. Start executing with proven frameworks that have generated
+                over $100M in value.
+              </p>
+              <Link
+                href="/chat"
+                className="inline-block px-10 py-5 text-xl font-semibold bg-sky-600 text-white rounded-xl hover:bg-sky-500 transition-all hover:scale-105 shadow-lg shadow-sky-600/25"
+              >
+                Get Started Free
+              </Link>
+              <p className="text-zinc-500 text-sm mt-4">No credit card required</p>
+            </>
+          )}
         </div>
       </section>
 
